@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "frontend",
+      "path": "frontend"
+    },
+    {
+      "name": "backend",
+      "path": "backend"
+    },
+  ],
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "npm.packageManager": "yarn",
+  },
+  "extensions": {
+    "recommendations": [
+
+    ]
+  }
+}
