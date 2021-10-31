@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import express from "express";
-import { router } from "./src/routes";
+import "reflect-metadata";
+import { router } from "./routes";
 
 dotenv.config({ path: __dirname + "/.env" });
 
