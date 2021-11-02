@@ -7,17 +7,18 @@
     {
       "name": "backend",
       "path": "backend"
-    },
+    }
   ],
   "settings": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
     },
     "npm.packageManager": "yarn",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
   },
   "extensions": {
-    "recommendations": [
-
-    ]
+    "recommendations": []
   }
 }
