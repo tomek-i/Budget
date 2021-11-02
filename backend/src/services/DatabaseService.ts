@@ -1,6 +1,6 @@
-import "reflect-metadata";
-import { Connection, createConnection } from "typeorm";
-import { DatabaseSeedService } from "./DatabaseSeederService";
+import 'reflect-metadata';
+import { Connection, createConnection } from 'typeorm';
+import { DatabaseSeedService } from './DatabaseSeederService';
 
 let connection: Connection | undefined = undefined;
 
@@ -18,7 +18,7 @@ const getAll = (_class: any) => {
   return connection?.manager.find(_class);
 };
 
-const get = <T extends unknown>(_class: any, id: number) => {
+const get = <T extends unknown>(_class: any, id: string) => {
   return connection?.manager.findOne<T>(_class, id);
 };
 export const DatabaseService = {

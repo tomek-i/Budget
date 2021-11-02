@@ -1,35 +1,44 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+export type UserType = {
+  username: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  age?: number;
+};
 @Entity()
-export class BankExport {
+export class User implements UserType {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  username: string;
 
-    @Column()
-    fileName:string
+  @Column()
+  email!: string;
+
+  @Column()
+  firstName?: string;
+
+  @Column()
+  lastName?: string;
+
+  @Column()
+  age?: number;
+
+  /*
+  @OneToMany(_type => Post, (post: Post) => post.user)
+    posts!: Array<Post>
+
+    @OneToMany(_type=> Comment, (comment: Comment) => comment.user)
+    comments!: Array<Comment>;
     
-    @Column()
-    imported:boolean
-    
-    @Column()
-    dateImported:Date
+    @CreateDateColumn()
+    createdAt!: Date;
 
-}
+    @UpdateDateColumn()
+    updatedAt!: Date;
 
-@Entity()
-export class User {
-
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column()
-    firstName: string;
-
-    @Column()
-    lastName: string;
-
-    @Column()
-    age: number;
-
+    */
 }
