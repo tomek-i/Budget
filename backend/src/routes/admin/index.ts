@@ -1,5 +1,6 @@
 import csv from 'csv-parser';
 import { Router } from 'express';
+import { createReadStream } from 'fs';
 import { AdminController } from '../../controllers/adminController';
 import { ImportService } from '../../services/ImportService';
 import { DatabaseRoutes } from './database';
@@ -7,10 +8,16 @@ import { Transaction } from '../../entity/Transaction';
 import { DatabaseService } from '../../services/DatabaseService';
 import { WestpacBankTransaction } from '../../types/bankTransaction';
 import { FileHelper } from '../../utils';
-import { createReadStream } from 'fs';
+import { BankExport } from '../../entity/BankExport';
 
 export const AdminRoutes = Router();
 
+AdminRoutes.get('/last-import', async (req, res) => {
+  let all = await DatabaseService.getAll(BankExport);
+  console.log('BANK EXPORT:', all);
+
+  res.json(all);
+});
 AdminRoutes.get('/import', async (req, res) => {
   let d = new Date();
   let day = d.getDate().toString().padStart(2, '0');
@@ -34,6 +41,11 @@ AdminRoutes.get('/import', async (req, res) => {
         })
         .on('end', async () => {
           entities = await DatabaseService.save(entities);
+          let bankExport = new BankExport();
+          bankExport.fileName = newpath;
+          bankExport.dateImported = new Date();
+          bankExport.imported = true;
+          await DatabaseService.save(bankExport);
           res.json(entities);
         })
         .on('error', reject);
@@ -44,7 +56,20 @@ AdminRoutes.get('/import', async (req, res) => {
 });
 AdminRoutes.get('/test', async (req, res) => {
   try {
-    await ImportService.ImportData();
+    let latestResult = await DatabaseService.findOne<BankExport>(BankExport, {
+      order: {
+        dateImported: 'ASC',
+      },
+      take: 1,
+    });
+
+    try {
+      await ImportService.ImportData(latestResult?.dateImported);
+    } catch (error) {
+      console.error('CATCHING ERROR:', error);
+      res.status(500).json(error);
+      return;
+    }
     //Data_export_31 10 2021.csv
     let d = new Date();
     let day = d.getDate().toString().padStart(2, '0');
