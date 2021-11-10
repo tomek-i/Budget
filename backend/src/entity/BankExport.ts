@@ -1,19 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-
-@Entity('uuid')
+@Entity()
 export class BankExport {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  fileName: string;
 
-    @Column()
-    fileName: string;
+  @Column()
+  imported: boolean;
 
-    @Column()
-    imported: boolean;
+  @Column()
+  dateImported: Date;
 
-    @Column()
-    dateImported: Date;
+  @CreateDateColumn()
+  createdAt!: Date;
 
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

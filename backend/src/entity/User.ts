@@ -3,10 +3,8 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 export type UserType = {
   username: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
-  age?: number;
 };
+
 @Entity()
 export class User implements UserType {
   @PrimaryGeneratedColumn('uuid')
@@ -17,15 +15,6 @@ export class User implements UserType {
 
   @Column()
   email!: string;
-
-  @Column()
-  firstName?: string;
-
-  @Column()
-  lastName?: string;
-
-  @Column()
-  age?: number;
 
   /*
   @OneToMany(_type => Post, (post: Post) => post.user)
