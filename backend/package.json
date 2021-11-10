@@ -17,18 +17,19 @@
     "ext": "ts"
   },
   "scripts": {
+    "start": "node build/server.js",
+    "pretty": "prettier --write src/**/*.ts{,x}",
+    "test": "jest --passWithNoTests",
     "clean": "ts-node tools/clean.ts",
     "build2": "ts-node tools/build.ts",
-    "start": "node build/server.js",
     "build": "tsc",
     "build:original": "tsoa spec-and-routes && tsc --project ./",
-    "test": "jest --passWithNoTests",
     "predev": "npm run swagger",
     "prebuild": "npm run swagger",
     "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec\"",
     "routes": "tsoa routes",
     "swagger": "tsoa spec",
-    "docs": "typedoc --out docs --entryPointStrategy expand ./src"
+    "docs": "typedoc --treatWarningsAsErrors --logLevel Verbose --out docs --entryPointStrategy expand ./src"
   },
   "keywords": [],
   "author": "",
@@ -51,15 +52,16 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.4.0",
+    "@types/faker": "^5.5.9",
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@types/faker": "^5.5.9",
     "csv-parser": "^3.0.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",
     "path": "^0.12.7",
+    "prettier": "^2.4.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
     "swagger-node-express": "^2.1.3",
