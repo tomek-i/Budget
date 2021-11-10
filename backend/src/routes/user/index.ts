@@ -1,17 +1,18 @@
 import { Router } from 'express';
 import { UserController } from '../../controllers/userController';
-import { DatabaseService } from '../../services/DatabaseService';
+// import { DatabaseService } from '../../services/DatabaseService';
 
 export const UserRoutes = Router();
+const controller = new UserController();
 
 // URL: ./users/
 //UserRoutes.get('/', UserController.getAll);
-UserRoutes.get('/', (req, res) => {
-  res.send('OK USERS');
+UserRoutes.get('/', async (req, res) => {
+  let response = await controller.getAll();
+  res.json(response);
 });
 
 UserRoutes.get('/:id', async (req, res) => {
-  const controller = new UserController();
   const response = await controller.getById(req.params.id);
   if (!response) res.status(404).send({ message: 'No user found' });
   return res.send(response);

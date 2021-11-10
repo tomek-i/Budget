@@ -16,6 +16,13 @@ import { UserService } from '../services/UserService';
 @Route('api/users')
 @Tags('User')
 export class UserController {
+  @Get('/')
+  public async getAll(): Promise<User[]> {
+    let result = await UserService.getAll();
+    if (!result) throw new Error('Could not fetch user.');
+    return result;
+  }
+
   @Get('/:id')
   public async getById(@Path() id: string): Promise<User> {
     let result = await UserService.getById(id);
