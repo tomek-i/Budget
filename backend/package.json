@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "node build/server.js",
-    "pretty": "prettier --write src/**/*.ts{,x}",
+    "pretty": "prettier --find-config-path --write src/**/*.ts{,x}",
     "test": "jest --passWithNoTests",
     "clean": "ts-node tools/clean.ts",
     "build2": "ts-node tools/build.ts",
