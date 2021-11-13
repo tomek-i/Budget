@@ -11,12 +11,15 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "axios": "^0.24.0",
+    "materialize-css": "^1.0.0-rc.2",
     "next": "12.0.1",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-materialize": "^3.10.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.8",
+    "@babel/core": "^7.16.0",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
@@ -24,8 +27,11 @@
     "@types/node": "16.11.6",
     "@types/react": "17.0.33",
     "babel-loader": "^8.2.3",
+    "css-loader": "^6.5.1",
     "eslint": "7",
     "eslint-config-next": "12.0.1",
+    "storybook-css-modules-preset": "^1.1.1",
+    "style-loader": "^3.3.1",
     "typescript": "4.4.4"
   }
 }
