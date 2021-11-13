@@ -13,6 +13,7 @@ const seed = async () => {
     await DatabaseService.save(data);
     return `Saved ${data.length} users to the database`;
   });
+
   const seedCategories = getPromise(async () => {
     let data = await parseSeedJsonFile(Category);
     await DatabaseService.save(data);

@@ -8,9 +8,11 @@ createConnection()
     connection = conn;
   })
   .catch((error) => console.log(error));
+
 const save = <T extends unknown>(entity: T) => {
   return connection?.manager.save(entity);
 };
+
 const getAll = <T extends unknown>(_class: any) => {
   return connection?.manager.find<T>(_class);
 };
@@ -18,9 +20,11 @@ const getAll = <T extends unknown>(_class: any) => {
 const get = <T extends unknown>(_class: any, id: string) => {
   return connection?.manager.findOne<T>(_class, id);
 };
+
 const find = <T extends unknown>(_class: any, options?: FindManyOptions<T>) => {
   return connection?.manager.find<T>(_class, options);
 };
+
 const findOne = <T extends unknown>(
   _class: any,
   options?: FindManyOptions<T>,

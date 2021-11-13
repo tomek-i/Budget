@@ -14,10 +14,9 @@ export const AdminRoutes = Router();
 
 AdminRoutes.get('/last-import', async (req, res) => {
   let all = await DatabaseService.getAll(BankExport);
-  console.log('BANK EXPORT:', all);
-
   res.json(all);
 });
+
 AdminRoutes.get('/import', async (req, res) => {
   let d = new Date();
   let day = d.getDate().toString().padStart(2, '0');
@@ -54,6 +53,7 @@ AdminRoutes.get('/import', async (req, res) => {
     res.status(500).send(error);
   }
 });
+
 AdminRoutes.get('/test', async (req, res) => {
   try {
     let latestResult = await DatabaseService.findOne<BankExport>(BankExport, {
@@ -91,6 +91,7 @@ AdminRoutes.get('/test', async (req, res) => {
     res.send(error);
   }
 });
+
 // URL: ./admin/
 AdminRoutes.get('/user/:id', AdminController.getAdminById);
 AdminRoutes.get('/user/:username', AdminController.getAdminByUsername);
