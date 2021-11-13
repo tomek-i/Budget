@@ -8,10 +8,8 @@ import {
   Delete,
   SuccessResponse,
 } from 'tsoa';
-import { User, UserType } from '../entity/User';
+import { User } from '../entity/User';
 import { UserService } from '../services/UserService';
-
-//import { UsersService, UserCreationParams } from './usersService';
 
 @Route('api/users')
 @Tags('User')
@@ -32,6 +30,11 @@ export class UserController {
 
   @Post()
   public async createUser(@Body() requestBody: User): Promise<User> {
+    if (!requestBody) throw Error('Missing data');
+    if (!requestBody.username) throw Error('Invalid username');
+    if (!requestBody.email) throw Error('Invalid email');
+    if (!requestBody.password) throw Error('Invalid password');
+
     let result = await UserService.create(requestBody);
     if (!result) throw new Error('Could not create user.');
     //TODO: maybe just send back the ID ?
