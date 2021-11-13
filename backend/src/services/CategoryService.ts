@@ -14,7 +14,7 @@ const create = async (data: CategoryType): Promise<Category | undefined> => {
     createdAt: new Date(),
     updatedAt: new Date(),
     ...data,
-  });
+  } as Category);
 };
 
 export const CategoryService = { getById, create, getAll };
