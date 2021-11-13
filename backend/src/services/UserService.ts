@@ -9,12 +9,15 @@ const getAll = async (): Promise<User[] | undefined> => {
 };
 
 const create = async (data: UserType): Promise<User | undefined> => {
-  return DatabaseService.save({
+  /*
+  {
     id: '',
     createdAt: new Date(),
     updatedAt: new Date(),
     ...data,
-  });
+  }
+  */
+  return DatabaseService.save(new User(data));
 };
 
 export const UserService = { getById, create, getAll };
