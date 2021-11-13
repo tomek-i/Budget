@@ -1,10 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Transaction } from './Transaction';
 
 export type CategoryType = {
   title: string;
@@ -30,6 +25,7 @@ export class Category implements CategoryType {
 
   @Column()
   title: string;
+
   /**
    * the description columns
    */
@@ -39,4 +35,10 @@ export class Category implements CategoryType {
   //TODO: add subcategories relation
   @Column({ nullable: true })
   icon?: string;
+
+  @OneToMany(
+    (_type) => Transaction,
+    (transaction: Transaction) => transaction.category,
+  )
+  transactions?: Array<Transaction>;
 }
