@@ -6,6 +6,64 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"Transaction": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"bankAccount": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"narrative": {
+						"type": "string"
+					},
+					"debitAmount": {
+						"type": "number",
+						"format": "double"
+					},
+					"creditAmount": {
+						"type": "number",
+						"format": "double"
+					},
+					"balance": {
+						"type": "number",
+						"format": "double"
+					},
+					"categories": {
+						"type": "string",
+						"enum": [
+							"PAYMENT",
+							"DEP",
+							"CREDIT",
+							"OTHER",
+							"POS",
+							"CASH"
+						]
+					},
+					"serial": {
+						"type": "string"
+					},
+					"category": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"bankAccount",
+					"date",
+					"narrative",
+					"debitAmount",
+					"creditAmount",
+					"balance",
+					"categories",
+					"serial"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Category": {
 				"description": "Category to classify transactions together.",
 				"properties": {
@@ -25,6 +83,12 @@
 					},
 					"id": {
 						"type": "string"
+					},
+					"transactions": {
+						"items": {
+							"$ref": "#/components/schemas/Transaction"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -36,6 +100,9 @@
 			},
 			"User": {
 				"properties": {
+					"password": {
+						"type": "string"
+					},
 					"email": {
 						"type": "string"
 					},
@@ -47,6 +114,7 @@
 					}
 				},
 				"required": [
+					"password",
 					"email",
 					"username",
 					"id"
@@ -87,6 +155,31 @@
 				},
 				"tags": [
 					"Category"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/transactions": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Transaction"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Transaction"
 				],
 				"security": [],
 				"parameters": []
