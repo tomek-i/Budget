@@ -4,7 +4,27 @@ import Head from 'next/head';
 import SignupCard from '../src/components/molecules/SignupCard';
 import styles from '../styles/Home.module.css';
 
+declare type UserRegistration = {
+  username: string;
+  email: string;
+  password: string;
+};
+
 const SignUp: NextPage = () => {
+  const registerUser = async ({
+    username,
+    email,
+    password,
+  }: UserRegistration) => {
+    axios.post(`${process.env.BASE_API_URL}/users`, {
+      //TODO: replace for types?!
+      username,
+      email,
+      password,
+    });
+    console.log('SNED TO SERVER:', username, email, password);
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,14 +40,9 @@ const SignUp: NextPage = () => {
 
         <SignupCard
           loginLink={'/login'}
-          onSubmit={(username: string, email: string, password: string) => {
-            axios.post('http://localhost:4000/api/users', {
-              username,
-              email,
-              password,
-            });
-            console.log('SNED TO SERVER:', username, email, password);
-          }}
+          onSubmit={(username: string, email: string, password: string) =>
+            registerUser({ username, email, password })
+          }
         />
       </main>
 
