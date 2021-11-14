@@ -17,7 +17,37 @@ AdminRoutes.get('/last-import', async (req, res) => {
   res.json(all);
 });
 
+AdminRoutes.get('/import/:fileName', async (req, res) => {
+  let filename = req.params.fileName;
+
+  let newpath = `${process.cwd()}\\__files\\${filename}`;
+
+  try {
+    await new Promise((resolve, reject) => {
+      let entities: Transaction[] | undefined = [];
+
+      createReadStream(newpath)
+        .pipe(csv())
+        .on('data', async (data: WestpacBankTransaction) => {
+          entities?.push(new Transaction(data));
+        })
+        .on('end', async () => {
+          entities = await DatabaseService.save(entities);
+          let bankExport = new BankExport();
+          bankExport.fileName = newpath;
+          bankExport.dateImported = new Date();
+          bankExport.imported = true;
+          await DatabaseService.save(bankExport);
+          res.json(entities);
+        })
+        .on('error', reject);
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 AdminRoutes.get('/import', async (req, res) => {
+  //TODO: probably can use the route /import/:fileName by generating the filename here only and reuse the above route
   let d = new Date();
   let day = d.getDate().toString().padStart(2, '0');
   let month = (d.getMonth() + 1).toString().padStart(2, '0');
