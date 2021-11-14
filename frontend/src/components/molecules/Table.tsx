@@ -19,6 +19,18 @@ const Table: NextPage<Table> = ({ columns, data }) => {
     data,
   });
 
+  const htmlDecode = (input: any): string => {
+    var e = document.createElement('div');
+    console.log('INPUT:', input);
+    // console.log('input.props.data[0].icon:', input.props.data[0].icon);
+    console.log('e:', e);
+    console.log('e.childNodes:', e.childNodes);
+    console.log('e.childNodes[0].nodeValue:', e.childNodes[0]?.nodeValue);
+    e.innerHTML = input.props.data[0].icon;
+    return e!.innerHTML;
+    //return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue!;
+  };
+
   // Render the UI for your table
   return (
     <>
@@ -42,7 +54,11 @@ const Table: NextPage<Table> = ({ columns, data }) => {
                 {row.cells.map((cell, ix) => {
                   return (
                     <td {...cell.getCellProps()} key={ix}>
-                      {cell.render('Cell')}
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: htmlDecode(cell.render('Cell')),
+                        }}
+                      ></span>
                     </td>
                   );
                 })}

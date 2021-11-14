@@ -1,4 +1,5 @@
-import { User, UserType } from '../entity/User';
+import { User } from '../entity/User';
+import { UserType } from '../../../common/types/user.type';
 import { DatabaseService } from './DatabaseService';
 
 const getById = async (id: string): Promise<User | undefined> => {

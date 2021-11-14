@@ -1,14 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { WestpacBankTransaction } from '../types/bankTransaction';
 import { Category } from './Category';
-
+import {
+  TransactionType,
+  TransactionCategory,
+} from '../../../common/types/transaction.type';
 @Entity()
-export class Transaction {
+export class Transaction implements TransactionType {
   constructor(data?: WestpacBankTransaction) {
     if (data) {
       this.balance = data.Balance;
       this.bankAccount = data['Bank Account'];
-      this.categories = data.Categories;
+      this.categories = data.Categories as TransactionCategory;
       this.creditAmount = data['Credit Amount'];
       this.date = data.Date.toString();
       this.debitAmount = data['Debit Amount'];
@@ -43,7 +46,7 @@ export class Transaction {
   //number
 
   @Column()
-  categories: 'PAYMENT' | 'DEP' | 'CREDIT' | 'OTHER' | 'POS' | 'CASH';
+  categories: TransactionCategory;
 
   @Column()
   serial: string;

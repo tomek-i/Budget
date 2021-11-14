@@ -6,21 +6,29 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"TransactionCategory": {
+				"enum": [
+					"PAYMENT",
+					"DEP",
+					"CREDIT",
+					"OTHER",
+					"POS",
+					"CASH"
+				],
+				"type": "string"
+			},
 			"Transaction": {
 				"properties": {
-					"id": {
+					"category": {
 						"type": "string"
 					},
-					"bankAccount": {
+					"serial": {
 						"type": "string"
 					},
-					"date": {
-						"type": "string"
+					"categories": {
+						"$ref": "#/components/schemas/TransactionCategory"
 					},
-					"narrative": {
-						"type": "string"
-					},
-					"debitAmount": {
+					"balance": {
 						"type": "number",
 						"format": "double"
 					},
@@ -28,48 +36,94 @@
 						"type": "number",
 						"format": "double"
 					},
-					"balance": {
+					"debitAmount": {
 						"type": "number",
 						"format": "double"
 					},
-					"categories": {
-						"type": "string",
-						"enum": [
-							"PAYMENT",
-							"DEP",
-							"CREDIT",
-							"OTHER",
-							"POS",
-							"CASH"
-						]
-					},
-					"serial": {
+					"narrative": {
 						"type": "string"
 					},
-					"category": {
+					"date": {
+						"type": "string"
+					},
+					"bankAccount": {
+						"type": "string"
+					},
+					"id": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"id",
-					"bankAccount",
-					"date",
-					"narrative",
-					"debitAmount",
-					"creditAmount",
-					"balance",
+					"serial",
 					"categories",
-					"serial"
+					"balance",
+					"creditAmount",
+					"debitAmount",
+					"narrative",
+					"date",
+					"bankAccount",
+					"id"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
+			"TransactionType": {
+				"properties": {
+					"category": {
+						"type": "string"
+					},
+					"serial": {
+						"type": "string"
+					},
+					"categories": {
+						"$ref": "#/components/schemas/TransactionCategory"
+					},
+					"balance": {
+						"type": "number",
+						"format": "double"
+					},
+					"creditAmount": {
+						"type": "number",
+						"format": "double"
+					},
+					"debitAmount": {
+						"type": "number",
+						"format": "double"
+					},
+					"narrative": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"bankAccount": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"serial",
+					"categories",
+					"balance",
+					"creditAmount",
+					"debitAmount",
+					"narrative",
+					"date",
+					"bankAccount",
+					"id"
+				],
+				"type": "object"
+			},
 			"Category": {
 				"description": "Category to classify transactions together.",
 				"properties": {
-					"buffer": {
-						"type": "string",
-						"format": "byte"
+					"transactions": {
+						"items": {
+							"$ref": "#/components/schemas/Transaction"
+						},
+						"type": "array"
 					},
 					"icon": {
 						"type": "string"
@@ -83,12 +137,6 @@
 					},
 					"id": {
 						"type": "string"
-					},
-					"transactions": {
-						"items": {
-							"$ref": "#/components/schemas/Transaction"
-						},
-						"type": "array"
 					}
 				},
 				"required": [

@@ -6,16 +6,17 @@ export const CategoryRoutes = Router();
 // URL: ./categeories/
 CategoryRoutes.get('/', async (req, res) => {
   const controller = new CategoryController();
-  let resuls = await controller.getAll();
+  let results = await controller.getAll();
 
-  let imgs = '';
+  // let imgs = '';
 
-  resuls.map((item) => {
-    if (item.icon)
-      imgs += `<img width="50" src=${item.icon} alt="${item.title}" />`;
-  });
+  // resuls.map((item) => {
+  //   if (item.icon)
+  //     imgs += `<img width="50" src=${item.icon} alt="${item.title}" />`;
+  // });
 
-  res.send(imgs);
+  // res.send(imgs);
+  res.json(results);
 });
 
 CategoryRoutes.get('/:id', async (req, res) => {

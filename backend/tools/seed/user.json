@@ -1,14 +1,17 @@
 [
   {
-    "username": "tomek",
-    "email": "tomek.iwainski@gmail.com"
+    "username": "test123",
+    "email": "test123@example.com",
+    "password": "test"
   },
   {
     "username": "admin",
-    "email": "example@example.com"
+    "email": "example@example.com",
+    "password": "test"
   },
   {
     "username": "test",
-    "email": "test@example.com"
+    "email": "test@example.com",
+    "password": "test"
   }
 ]

@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
-export type UserType = {
-  username: string;
-  email: string;
-  password: string;
-};
+import { UserType } from '../../../common/types/user.type';
+// export type UserType = {
+//   username: string;
+//   email: string;
+//   password: string;
+// };
 
 @Entity()
 export class User implements UserType {

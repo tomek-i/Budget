@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Transaction } from './Transaction';
-
-export type CategoryType = {
-  title: string;
-  description?: string;
-  icon?: string;
-  buffer?: Buffer;
-};
+import { CategoryType } from '../../../common/types/category.type';
+// export type CategoryType = {
+//   title: string;
+//   description?: string;
+//   icon?: string;
+//   buffer?: Buffer;
+// };
 
 /**
  * Category to classify transactions together.

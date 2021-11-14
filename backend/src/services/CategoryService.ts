@@ -1,5 +1,6 @@
-import { Category, CategoryType } from '../entity/Category';
+import { Category } from '../entity/Category';
 import { DatabaseService } from './DatabaseService';
+import { CategoryType } from '../../../common/types/category.type';
 
 const getById = async (id: string): Promise<Category | undefined> => {
   return DatabaseService.get<Category>(Category, id);

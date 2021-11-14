@@ -3,19 +3,23 @@ import { useTable, Column } from 'react-table';
 import React, { useEffect, useState } from 'react';
 import Table from '../src/components/molecules/Table';
 import axios from 'axios';
+import {
+  TransactionCategory,
+  TransactionType,
+} from '../../common/types/transaction.type';
 
-class Transaction {
+class Transaction implements TransactionType {
   id!: string;
-  balance!: number;
   bankAccount!: string;
-  categories!: string;
-  creditAmount!: number;
   date!: string;
-  debitAmount!: number;
   narrative!: string;
+  debitAmount!: number;
+  creditAmount!: number;
+  balance!: number;
+  categories!: TransactionCategory;
   serial!: string;
+  category?: string;
 }
-
 const Transactions: NextPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [columns, setColumns] = useState<Column<object>[]>([]);
@@ -35,7 +39,7 @@ const Transactions: NextPage = () => {
     async function fetchData() {
       const response = await init();
       if (response.data && response.data.length > 0) {
-        setTransactions(response.data);
+        setTransactions([response.data[0]]);
       }
       setLoading(false);
     }
@@ -48,9 +52,13 @@ const Transactions: NextPage = () => {
     ).map((columnName) => {
       return {
         Header: columnName.toUpperCase(),
-        accessor: columnName.toLowerCase(),
+        accessor: columnName,
       };
     });
+    // cols.push({
+    //   Header: 'Amount',
+    //   accessor: 'amount',
+    // });
     setColumns(cols);
   };
 
