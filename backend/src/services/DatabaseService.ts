@@ -13,8 +13,11 @@ const save = <T extends unknown>(entity: T) => {
   return connection?.manager.save(entity);
 };
 
-const getAll = <T extends unknown>(_class: any) => {
-  return connection?.manager.find<T>(_class);
+const getAll = <T extends unknown>(
+  _class: any,
+  options?: FindManyOptions<T>,
+) => {
+  return connection?.manager.find<T>(_class, options);
 };
 
 const get = <T extends unknown>(_class: any, id: string) => {
