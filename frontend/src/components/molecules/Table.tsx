@@ -35,7 +35,7 @@ interface Table {
   options?: TableOptions;
 }
 
-const Table: NextPage<Table> = ({
+const Table: React.FC<Table> = ({
   id,
   columns,
   data,
@@ -139,12 +139,14 @@ const Table: NextPage<Table> = ({
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.length === 0 && (
-            <td className="w-full" colSpan={headerGroups[0]?.headers.length}>
-              <span className="text-center my-4">Sorry no results found</span>
-              <div className="text-center">
-                <Button onClick={clearFilters} text={'CLEAR SEARCH'} />
-              </div>
-            </td>
+            <tr>
+              <td className="w-full" colSpan={headerGroups[0]?.headers.length}>
+                <span className="text-center my-4">Sorry no results found</span>
+                <div className="text-center">
+                  <Button onClick={clearFilters} text={'CLEAR SEARCH'} />
+                </div>
+              </td>
+            </tr>
           )}
           {rows.map((row, rowIndex) => {
             prepareRow(row);

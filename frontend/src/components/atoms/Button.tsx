@@ -6,7 +6,7 @@ interface Button {
   onClick?: Function;
 }
 
-const Button: NextPage<Button> = ({ text, onClick }) => {
+const Button: React.FC<Button> = ({ text, onClick }) => {
   return <button onClick={() => onClick && onClick()}>{text}</button>;
 };
 

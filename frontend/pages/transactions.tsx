@@ -8,13 +8,14 @@ import {
   TransactionType,
 } from '../../common/types/transaction.type';
 import { Category } from './categories';
-import Dropdown from '../src/components/atoms/Dropdown';
 import { column, getColumnOptions } from '../decorators';
 import {
   BalanceCell,
+  CategoryCell,
   CreditAmountCell,
   DebitAmountCell,
 } from '../src/components/molecules/Cells/DebitAmountCell';
+import CategoriesDropdown from '../src/components/atoms/CategoriesDropdown';
 
 class Transaction implements TransactionType {
   @column({
@@ -56,9 +57,12 @@ class Transaction implements TransactionType {
     visible: false,
   })
   serial!: string;
+
+  @column({
+    Cell: () => <CategoriesDropdown />,
+  })
   category?: string;
 }
-
 const TransactionTable: NextPage = () => {
   const [columns, setColumns] = useState<Column<object>[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -98,7 +102,7 @@ const TransactionTable: NextPage = () => {
     return text.charAt(0).toUpperCase() + text.slice(1);
   };
 
-  const createColumns = () => {
+  const createColumns = async () => {
     const dummyInstance = new Transaction();
     const dummyProperties = Object.getOwnPropertyNames(dummyInstance);
 

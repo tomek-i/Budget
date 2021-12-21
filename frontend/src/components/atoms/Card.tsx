@@ -9,7 +9,7 @@ interface Card {
   alignTitle?: 'center' | 'right' | 'left';
   uppercase?: boolean;
 }
-const Card: NextPage<Card> = ({
+const Card: React.FC<Card> = ({
   title,
   flow,
   width,

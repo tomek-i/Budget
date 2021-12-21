@@ -11,7 +11,7 @@ interface LoginCard {
   onSubmit?: Function;
 }
 
-const LoginCard: NextPage<LoginCard> = ({
+const LoginCard: React.FC<LoginCard> = ({
   title,
   forgotPasswordLink,
   signUpLink,

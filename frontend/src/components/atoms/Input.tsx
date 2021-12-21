@@ -11,7 +11,7 @@ interface Input {
   onSubmit?: Function;
 }
 
-const Input: NextPage<Input> = ({
+const Input: React.FC<Input> = ({
   type = 'text',
   value,
   placeholder,

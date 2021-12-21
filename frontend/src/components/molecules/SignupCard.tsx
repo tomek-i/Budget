@@ -10,7 +10,7 @@ interface SignupCard {
   onSubmit?: Function;
 }
 
-const SignupCard: NextPage<SignupCard> = ({ title, loginLink, onSubmit }) => {
+const SignupCard: React.FC<SignupCard> = ({ title, loginLink, onSubmit }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

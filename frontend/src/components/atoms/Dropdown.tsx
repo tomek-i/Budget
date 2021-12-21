@@ -1,11 +1,10 @@
-import { NextPage } from 'next';
 import React from 'react';
 
 interface Dropdown {
   items?: any[];
 }
 
-const Dropdown: NextPage<Dropdown> = ({ items }) => {
+const Dropdown: React.FC<Dropdown> = ({ items }) => {
   return (
     <select>
       {items?.map((item, i) => (

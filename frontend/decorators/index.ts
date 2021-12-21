@@ -1,4 +1,3 @@
-import { CellProps, Renderer } from 'react-table';
 import 'reflect-metadata';
 
 const tableDisplayColumnKey = Symbol('column');
