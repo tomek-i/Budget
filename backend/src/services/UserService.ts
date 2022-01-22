@@ -8,6 +8,15 @@ const getAll = async (): Promise<User[] | undefined> => {
   return DatabaseService.getAll<User>(User);
 };
 
+const createMany = async (users: UserType[]): Promise<User[] | undefined> => {
+  const result: User[] = [];
+  for (const user of users) {
+    let savedUser = await create(user);
+    if (savedUser) result.push(savedUser);
+  }
+  return result;
+};
+
 const create = async (data: UserType): Promise<User | undefined> => {
   let user = new User();
   Object.assign(user, data);
@@ -19,14 +28,10 @@ const create = async (data: UserType): Promise<User | undefined> => {
     ...data,
   };
 
-  console.log('USER HASH FUNCTION:', user.hashPassword);
-  let newUser = await DatabaseService.save(test);
-  console.log('newUser after save', newUser);
-  console.log('newUser after save', newUser);
+  let newUser = await DatabaseService.save<User>(user);
   if (newUser) {
     let passwordLess: User = {
       ...newUser,
-      password: '',
       hashPassword: newUser.hashPassword, //NOTE: why do i have to specify this?
     };
     return passwordLess;
@@ -34,4 +39,4 @@ const create = async (data: UserType): Promise<User | undefined> => {
   throw new Error("Couldn't create user.");
 };
 
-export const UserService = { getById, create, getAll };
+export const UserService = { getById, create, getAll, createMany };

@@ -46,6 +46,9 @@
 					"serial": {
 						"type": "string"
 					},
+					"comment": {
+						"type": "string"
+					},
 					"category": {
 						"type": "string"
 					}
@@ -97,6 +100,73 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"ObjectLiteral": {
+				"description": "Interface of the simple literal object with any string keys.",
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {}
+			},
+			"UpdateResult": {
+				"description": "Result object returned by UpdateQueryBuilder execution.",
+				"properties": {
+					"raw": {
+						"description": "Raw SQL result returned by executed query."
+					},
+					"affected": {
+						"type": "number",
+						"format": "double",
+						"description": "Number of affected rows/documents\nNot all drivers support this"
+					},
+					"generatedMaps": {
+						"items": {
+							"$ref": "#/components/schemas/ObjectLiteral"
+						},
+						"type": "array",
+						"description": "Generated values returned by a database.\nHas entity-like structure (not just column database name and values)."
+					}
+				},
+				"required": [
+					"raw",
+					"generatedMaps"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TransactionPatchRequest": {
+				"properties": {
+					"category": {
+						"type": "string"
+					},
+					"comment": {
+						"type": "string"
+					},
+					"serial": {
+						"type": "string"
+					},
+					"narrative": {
+						"type": "string"
+					},
+					"debitAmount": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"creditAmount": {
+						"type": "string"
+					},
+					"categories": {
+						"type": "string"
+					},
+					"bankAccount": {
+						"type": "string"
+					},
+					"balance": {
+						"type": "string"
+					}
+				},
+				"type": "object"
 			},
 			"User": {
 				"properties": {
@@ -183,6 +253,76 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/api/transactions/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Transaction"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Transaction"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "Patch",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateResult"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Transaction"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TransactionPatchRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/api/users": {

@@ -2,6 +2,19 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { WestpacBankTransaction } from '../types/bankTransaction';
 import { Category } from './Category';
 
+export type TransactionPatchRequest = {
+  balance?: string;
+  bankAccount?: string;
+  categories?: string;
+  creditAmount?: string;
+  date?: string;
+  debitAmount?: string;
+  narrative?: string;
+  serial?: string;
+
+  comment?: string;
+  category?: string;
+};
 @Entity()
 export class Transaction {
   constructor(data?: WestpacBankTransaction) {
@@ -47,6 +60,9 @@ export class Transaction {
 
   @Column()
   serial: string;
+
+  @Column({ nullable: true })
+  comment?: string;
 
   @ManyToOne(() => Category, (category: Category) => category.transactions)
   category?: string;

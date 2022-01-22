@@ -7,26 +7,21 @@ import { DatabaseRoutes } from './database';
 import { Transaction } from '../../entity/Transaction';
 import { DatabaseService } from '../../services/DatabaseService';
 import { WestpacBankTransaction } from '../../types/bankTransaction';
-import { FileHelper } from '../../utils';
+import { FileHelper, Westpac, Windows } from '../../utils';
 import { BankExport } from '../../entity/BankExport';
 
 export const AdminRoutes = Router();
 
 AdminRoutes.get('/last-import', async (req, res) => {
   let all = await DatabaseService.getAll(BankExport);
-  res.json(all);
+  return res.json(all);
 });
 
 AdminRoutes.get('/import', async (req, res) => {
-  let d = new Date();
-  let day = d.getDate().toString().padStart(2, '0');
-  let month = (d.getMonth() + 1).toString().padStart(2, '0');
-  let year = d.getFullYear();
+  let filename = Westpac.GetExportdataFilename();
 
-  let ds = `${day}${month}${year}`;
-
-  let filename = `Data_export_${ds}.csv`;
-
+  //TODO: need to check if folder '__files' exist
+  //TODO: need to check if file in '__files' exist
   let newpath = `${process.cwd()}\\__files\\${filename}`;
 
   try {
@@ -50,11 +45,23 @@ AdminRoutes.get('/import', async (req, res) => {
         .on('error', reject);
     });
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).send(error);
   }
 });
 
-AdminRoutes.get('/test', async (req, res) => {
+AdminRoutes.get('/move', async (req, res) => {
+  //Data_export_31 10 2021.csv
+  let d = new Date();
+  let day = d.getDate().toString().padStart(2, '0');
+  let month = (d.getMonth() + 1).toString().padStart(2, '0');
+  let year = d.getFullYear();
+  let ds = `${day}${month}${year}`;
+  //C:\Users\thomas.iwainski\Downloads
+
+  return res.sendStatus(500);
+});
+
+AdminRoutes.get('/get-latest', async (req, res) => {
   try {
     let latestResult = await DatabaseService.findOne<BankExport>(BankExport, {
       order: {
@@ -64,37 +71,32 @@ AdminRoutes.get('/test', async (req, res) => {
     });
 
     try {
+      console.log('IMPORT START');
       await ImportService.ImportData(latestResult?.dateImported);
+      console.log('IMPORT FINISHED');
     } catch (error) {
       console.error('CATCHING ERROR:', error);
       res.status(500).json(error);
       return;
     }
-    //Data_export_31 10 2021.csv
-    let d = new Date();
-    let day = d.getDate().toString().padStart(2, '0');
-    let month = (d.getMonth() + 1).toString().padStart(2, '0');
-    let year = d.getFullYear();
-    let ds = `${day}${month}${year}`;
-    //C:\Users\thomas.iwainski\Downloads
 
-    let filename = `Data_export_${ds}.csv`;
+    let filename = Westpac.GetExportdataFilename();
     let newpath = `${process.cwd()}\\__files\\${filename}`;
-    let oldpath = `C:\\Users\\thomas.iwainski\\Downloads\\${filename}`;
-
-    if (FileHelper.Exists(oldpath)) {
-      FileHelper.Move(oldpath, newpath);
+    if (Windows.MoveFileFromDownloadsFolder(filename, newpath)) {
+      return res.sendStatus(200);
     }
 
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (error) {
-    res.send(error);
+    return res.send(error);
   }
 });
 
 // URL: ./admin/
 AdminRoutes.get('/user/:id', AdminController.getAdminById);
 AdminRoutes.get('/user/:username', AdminController.getAdminByUsername);
-AdminRoutes.get('/', (req, res) => {});
+AdminRoutes.get('/', (req, res) => {
+  res.send('OK');
+});
 
 AdminRoutes.use('/db', DatabaseRoutes);

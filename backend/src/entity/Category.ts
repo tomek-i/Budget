@@ -23,7 +23,7 @@ export class Category implements CategoryType {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ unique: true })
   title: string;
 
   /**

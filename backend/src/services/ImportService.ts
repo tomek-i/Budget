@@ -26,9 +26,10 @@ const ImportData = async (startDate?: Date, endDate?: Date) => {
   let date = startDate
     ? new Date(year, month, day)
     : new Date(year - 3, month, day);
+  console.log('launching pupeteer');
+  const browser = await puppeteer.launch({ headless: false });
 
-  const browser = await puppeteer.launch({ headless: true });
-
+  console.log('waiting for page');
   const page = await browser.newPage();
 
   // set user agent (override the default headless User Agent)
@@ -43,8 +44,10 @@ const ImportData = async (startDate?: Date, endDate?: Date) => {
   // const html = await page.content();
   // await writeFile('./content.html', html);
   await page.waitForSelector('#fakeusername');
-  await page.type('#fakeusername', process.env.WESTPAC_USERNAME!);
-  await page.type('#password', process.env.WESTPAC_PASSWORD!);
+  await page.type('#fakeusername', process.env.WESTPAC_USERNAME!, {
+    delay: 100,
+  });
+  await page.type('#password', process.env.WESTPAC_PASSWORD!, { delay: 100 });
   await page.click('#signin');
   await page.waitForNavigation();
 
