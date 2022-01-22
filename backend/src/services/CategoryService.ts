@@ -9,7 +9,7 @@ const getById = async (id: string): Promise<Category | undefined> => {
 const getAll = async (
   options?: FindManyOptions<Category>,
 ): Promise<Category[] | undefined> => {
-  return DatabaseService.getAll(Category, options);
+  return DatabaseService.getAll(Category);
 };
 
 const create = async (data: CategoryType): Promise<Category | undefined> => {

@@ -24,7 +24,7 @@ CategoryRoutes.get('/:id', async (req, res) => {
 });
 
 //creates a new one
-CategoryRoutes.post('/:id', async (req, res) => {
+CategoryRoutes.post('/', async (req, res) => {
   res.send('TODO');
 });
 

@@ -1,5 +1,34 @@
 import csv from 'csv-parser';
+import * as os from 'os';
 import { createReadStream, existsSync, ReadStream, rename } from 'fs';
+
+export namespace Westpac {
+  export const GetExportdataFilename = () => {
+    let d = new Date();
+    let day = d.getDate().toString().padStart(2, '0');
+    let month = (d.getMonth() + 1).toString().padStart(2, '0');
+    let year = d.getFullYear();
+    let ds = `${day}${month}${year}`;
+
+    return `Data_export_${ds}.csv`;
+  };
+}
+
+export namespace Windows {
+  export const MoveFileFromDownloadsFolder = (
+    filename: string,
+    destination: string,
+  ) => {
+    const source = `${os.homedir()}\\Downloads\\${filename}`;
+
+    if (FileHelper.Exists(source)) {
+      FileHelper.Move(source, destination);
+      return true;
+    }
+    console.error(`${filename} did not exist in Downloads folder.`);
+    return false;
+  };
+}
 /**
  * Utility for dealing with Files
  */
