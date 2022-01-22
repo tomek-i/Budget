@@ -1,4 +1,3 @@
-import type { NextPage } from 'next';
 import {
   Column,
   useFilters,
@@ -8,7 +7,7 @@ import {
 } from 'react-table';
 import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/components/molecules/Table.module.css';
-import Button from '../atoms/Button';
+import { Button } from '../atoms/Buttons/Button';
 import { PaginationControl } from './PaginationControl';
 
 interface TableSortOptions {

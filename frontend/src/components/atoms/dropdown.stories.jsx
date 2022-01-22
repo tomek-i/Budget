@@ -1,4 +1,4 @@
-import Dropdown from '../../src/components/atoms/Dropdown';
+import Dropdown from './Dropdown';
 
 export default {
   title: 'Atoms/Dropdown',

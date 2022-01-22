@@ -1,5 +1,4 @@
 import React from 'react';
-import { Category } from '../../../../pages/categories';
 import Dropdown from '../../atoms/Dropdown';
 
 export const DebitAmountCell = ({ value }: { value: number }) => {

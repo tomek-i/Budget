@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './Button';
+import { Button } from './Buttons/Button';
 
 export interface IPaginationButton {
   border?: 'default';
@@ -7,7 +7,7 @@ export interface IPaginationButton {
   current?: boolean;
   number?: number;
   disabled?: boolean;
-  onClick?: Function;
+  onClick?: () => void;
 }
 
 const PaginationButton: React.FC<IPaginationButton> = ({

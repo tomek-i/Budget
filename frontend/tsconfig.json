@@ -1,21 +1,24 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "target": "ESNext",
-    "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": false,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": false,
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": "src",
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["./src", "src/stories"]
+  "include": ["./src", "./types/**/*.ts", "./types/react-table-config.d.ts" "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
