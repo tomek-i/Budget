@@ -6,7 +6,7 @@ import '../../../css/style.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Notification',
+  title: 'Molecules/NotificationButton',
   component: NotificationButton,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 } as ComponentMeta<typeof NotificationButton>;
