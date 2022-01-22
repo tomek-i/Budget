@@ -7,6 +7,10 @@
     {
       "name": "backend",
       "path": "backend"
+    },
+	{
+      "name": "common",
+      "path": "common"
     }
   ],
   "settings": {

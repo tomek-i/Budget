@@ -17,6 +17,35 @@ AdminRoutes.get('/last-import', async (req, res) => {
   return res.json(all);
 });
 
+AdminRoutes.get('/import/:fileName', async (req, res) => {
+  let filename = req.params.fileName;
+
+  let newpath = `${process.cwd()}\\__files\\${filename}`;
+
+  try {
+    await new Promise((resolve, reject) => {
+      let entities: Transaction[] | undefined = [];
+
+      createReadStream(newpath)
+        .pipe(csv())
+        .on('data', async (data: WestpacBankTransaction) => {
+          entities?.push(new Transaction(data));
+        })
+        .on('end', async () => {
+          entities = await DatabaseService.save(entities);
+          let bankExport = new BankExport();
+          bankExport.fileName = newpath;
+          bankExport.dateImported = new Date();
+          bankExport.imported = true;
+          await DatabaseService.save(bankExport);
+          res.json(entities);
+        })
+        .on('error', reject);
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 AdminRoutes.get('/import', async (req, res) => {
   let filename = Westpac.GetExportdataFilename();
 

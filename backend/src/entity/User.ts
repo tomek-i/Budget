@@ -15,6 +15,14 @@ export type UserType = {
 
 @Entity()
 export class User implements UserType {
+  constructor(data?: UserType) {
+    if (data) {
+      this.username = data.username;
+      this.email = data.email;
+      this.password = data.password;
+    }
+  }
+
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
