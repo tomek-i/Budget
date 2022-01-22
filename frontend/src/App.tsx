@@ -1,7 +1,7 @@
-import { LoginPage } from './components/pages/loginpage';
+import { LoginPage } from './components/pages/auth/loginpage';
 import { Fragment } from 'react';
 import './App.css';
-import ProtectedRoute from './components/atoms/protectedRoute';
+import ProtectedRoute from './components/atoms/ProtectedRoute';
 import { HomePage } from './components/pages/home/home';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 

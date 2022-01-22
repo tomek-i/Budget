@@ -7,7 +7,7 @@ export interface ButtonProps {
   /**
    * the button text to display
    */
-  text: string;
+  text?: string;
   onClick?: (ev: React.MouseEvent<HTMLButtonElement>) => void;
   name?: string;
   disabled?: boolean;

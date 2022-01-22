@@ -8,7 +8,7 @@ export default {
   component: Shimmer,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    type: { control: { type: 'select', options: ['line', 'box', 'photo'] } },
+    type: { control: { type: 'select', options: ['line', 'box', 'round'] } },
   },
 } as ComponentMeta<typeof Shimmer>;
 
@@ -17,23 +17,23 @@ const Template: Story<ComponentProps<typeof Shimmer>> = (args) => (
   <Shimmer {...args} />
 );
 
-export const Default = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
-  type: 'line',
-  width: '',
-  height: '',
-};
 export const Line = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Line.args = {
   type: 'line',
-  width: '100px',
+  height: '4',
 };
 export const Box = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Box.args = {
   type: 'box',
-  width: '100px',
-  height: '100px',
+  width: '12',
+  height: '12',
+};
+export const Round = Template.bind({});
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+Round.args = {
+  type: 'round',
+  width: '12',
+  height: '12',
 };

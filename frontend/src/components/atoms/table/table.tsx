@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState, Dispatch, SetStateAction } from 'react';
 import { useTable, Column } from 'react-table';
-import { Shimmer } from '../shimmer/shimmer';
+import { Shimmer } from '../Shimmer/shimmer';
 import { useDragAndDrop } from '../../../hooks/useDragAndDrop';
+import { Checkbox } from '../Checkbox';
+import { IconButton } from '../Buttons/IconButton';
+import { FontAwesomeIcon } from '../FontAwesomeIcon';
 
 interface TableProps {
   headings: Column<object>[];
@@ -139,7 +142,7 @@ export const Table: React.FC<TableProps> = ({
               <tr key={rowIndex} {...row.getRowProps()}>
                 {multiseletc && (
                   <td className="p-2 whitespace-nowrap">
-                    <input type="checkbox" />{' '}
+                    <Checkbox />{' '}
                   </td>
                 )}
                 {
@@ -161,9 +164,20 @@ export const Table: React.FC<TableProps> = ({
                   })
                 }
                 {(canDelete || canEdit) && (
-                  <td className={'admin-cell'}>
-                    {/* {canEdit && <IconButton type={'edit'} color={'blue'} />} */}
-                    {/* {canDelete && <IconButton type={'trash'} color={'red'} />} */}
+                  <td className={'flex flex-row space-x-2'}>
+                    {canDelete && (
+                      <IconButton
+                        className="text-red-400"
+                        iconSide={'left'}
+                        icon={<FontAwesomeIcon type={'trash'} />}
+                      />
+                    )}
+                    {canEdit && (
+                      <IconButton
+                        iconSide={'left'}
+                        icon={<FontAwesomeIcon color="#33aaff" type={'edit'} />}
+                      />
+                    )}
                   </td>
                 )}
               </tr>
