@@ -1,34 +1,19 @@
-const path = require("path");
-
 module.exports = {
-  stories: [
-    "../stories/**/*.stories.mdx",
-    "../stories/**/*.stories.@(js|jsx|ts|tsx)",
-  ],
+  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "storybook-css-modules-preset",
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    {
+      name: '@storybook/addon-postcss',
+      options: {
+        postcssLoaderOptions: {
+          implementation: require('postcss'),
+        },
+      },
+    },
   ],
-  //presets: [path.resolve(__dirname, "./next-preset.js")],
+  framework: '@storybook/react',
+  core: {
+    builder: 'storybook-builder-vite',
+  },
 };
-
-// module.exports = {
-//   stories: [
-//     "../stories/**/*.stories.mdx",
-//     "../stories/**/*.stories.@(js|jsx|ts|tsx)",
-//   ],
-//   addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
-//   webpackFinal: async (config, { configType }) => {
-//     config.module.rules.push({
-//       test: /\.css$/,
-//       use: [
-//         {
-//           loader: "postcss-loader",
-//         },
-//       ],
-//       include: path.resolve(__dirname, "../"),
-//     });
-//     return config;
-//   },
-// };
