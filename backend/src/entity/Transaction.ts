@@ -1,4 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  TransactionCategory,
+  TransactionType,
+} from '../../../common/types/transaction.type';
 import { WestpacBankTransaction } from '../types/bankTransaction';
 import { Category } from './Category';
 
