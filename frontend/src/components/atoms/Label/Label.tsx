@@ -2,7 +2,7 @@ import React from 'react';
 import '../../../css/style.scss';
 
 export type LabelProps = {
-  text: string;
+  text?: string;
   htmlFor?: string;
   disabled?: boolean;
 };
