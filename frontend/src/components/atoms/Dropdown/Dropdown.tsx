@@ -1,10 +1,11 @@
 import React from 'react';
+import '../../../css/style.scss';
 
-interface Dropdown {
+export type DropdownProps = {
   items?: any[];
-}
+};
 
-const Dropdown: React.FC<Dropdown> = ({ items }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ items }) => {
   return (
     <select>
       {items?.map((item, i) => (
@@ -13,5 +14,3 @@ const Dropdown: React.FC<Dropdown> = ({ items }) => {
     </select>
   );
 };
-
-export default Dropdown;

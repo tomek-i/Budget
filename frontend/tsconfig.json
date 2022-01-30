@@ -19,6 +19,12 @@
     "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["./src", "./types/**/*.ts", "./types/react-table-config.d.ts" "**/*.ts", "**/*.tsx"],
+  "include": [
+    "./src",
+    "./types/**/*.ts",
+    "./types/react-table-config.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }

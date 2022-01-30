@@ -127,6 +127,8 @@ type TransitionProps = {
   leave?: string;
   leaveStart?: string;
   leaveEnd?: string;
+  id?: string;
+  role?: string;
 };
 export const Transition: React.FC<TransitionProps> = ({
   show,

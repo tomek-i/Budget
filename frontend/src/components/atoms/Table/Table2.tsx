@@ -7,8 +7,8 @@ import {
 } from 'react-table';
 import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/components/molecules/Table.module.css';
-import { Button } from '../atoms/Buttons/Button';
-import { PaginationControl } from './PaginationControl';
+import { Button } from '../Buttons/Button';
+import { PaginationControl } from '../../molecules/PaginationControl';
 
 interface TableSortOptions {
   id: string;
