@@ -7,3 +7,6 @@ https://www.toptal.com/express-js/nodejs-typescript-rest-api-pt-1
 https://www.freecodecamp.org/news/how-to-build-explicit-apis-with-openapi/
 
 https://levelup.gitconnected.com/the-simplest-way-to-add-swagger-to-a-node-js-project-c2a4aa895a3c
+
+BASIQ bank connection
+https://api.basiq.io/docs/quickstart-part-1
