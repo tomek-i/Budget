@@ -253,6 +253,21 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/bank": {
+			"get": {
+				"operationId": "Auth",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Bank"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/categories": {
 			"get": {
 				"operationId": "GetAll",
