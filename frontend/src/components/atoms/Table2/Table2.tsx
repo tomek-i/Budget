@@ -6,7 +6,7 @@ import {
   useTable,
 } from 'react-table';
 import React, { useEffect, useState } from 'react';
-import styles from '../../../styles/components/molecules/Table.module.css';
+// import styles from '../../../styles/components/molecules/Table.module.css';
 import { Button } from '../Buttons/Button';
 import { PaginationControl } from '../../molecules/PaginationControl';
 
@@ -118,7 +118,7 @@ const Table: React.FC<Table> = ({
         options?.ResultDisplay === 'BOTH') &&
         ResultDisplay()}
 
-      <table {...getTableProps()} className={styles.table} id={id}>
+      <table {...getTableProps()} className={''} id={id}>
         <thead>
           {headerGroups.map((headerGroup, ix) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={ix}>
