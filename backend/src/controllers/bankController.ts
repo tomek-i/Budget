@@ -17,7 +17,7 @@ import { UserService } from '../services/UserService';
 @Tags('Bank')
 export class BankController {
   @Get('/')
-  public async auth(): Promise<void> {
+  public async auth() {
     return BankService.auth();
   }
   public async createUser(data: CreateUserData) {
@@ -29,5 +29,11 @@ export class BankController {
 
   public async getAccounts(userId: string) {
     return BankService.getAccounts(userId);
+  }
+  public async getAccount(userId: string, accountId: string) {
+    return BankService.getAccount(userId, accountId);
+  }
+  public async getTransactions(userId: string, accountId?: string) {
+    return BankService.getTransactions(userId, accountId);
   }
 }

@@ -100,11 +100,8 @@ AdminRoutes.get('/get-latest', async (req, res) => {
     });
 
     try {
-      console.log('IMPORT START');
       await ImportService.ImportData(latestResult?.dateImported);
-      console.log('IMPORT FINISHED');
     } catch (error) {
-      console.error('CATCHING ERROR:', error);
       res.status(500).json(error);
       return;
     }

@@ -24,7 +24,6 @@ export class TransactionController {
     @Path() id: string,
     @Body() data: TransactionPatchRequest,
   ) {
-    console.log({ id, data });
-    return await TransactionService.patch(id, data);
+    return TransactionService.patch(id, data);
   }
 }

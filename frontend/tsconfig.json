@@ -15,7 +15,6 @@
     "jsx": "react-jsx",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "baseUrl": "src",
     "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true
   },

@@ -17,7 +17,6 @@ UserRoutes.get('/:id', async (req, res) => {
 });
 
 UserRoutes.post('/', async (req, res) => {
-  console.log('REQUEST REDCIEVED:', req.body);
   let response = await controller.createUser(req.body);
   if (!response) res.status(500).send({ message: "Couldn't create user." });
   return res.send(response);

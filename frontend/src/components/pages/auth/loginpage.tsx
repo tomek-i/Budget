@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useLoginMutation } from '../../../app/features/api/auth/auth';
 import { Navigate } from 'react-router-dom';
 import { login } from '../../../app/features/user/userSlice';
+import { LoginForm } from './../../../components/molecules/LoginForm';
 
 export interface LoginPageProps {}
 
@@ -26,5 +27,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
     );
   }
 
-  return <>login form</>;
+  return (
+    <>
+      <LoginForm />
+    </>
+  );
 };

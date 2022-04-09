@@ -7,7 +7,7 @@ createConnection()
   .then(async (conn) => {
     connection = conn;
   })
-  .catch((error) => console.log(error));
+  .catch((error) => console.error(error));
 
 const save = async <T extends unknown>(entity: T) => {
   return connection?.manager.save(entity)!;

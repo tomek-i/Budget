@@ -104,7 +104,7 @@ const ImportData = async (startDate?: Date, endDate?: Date) => {
   }
 
   if (alertMessage.length > 0) {
-    console.log('THROWING ERROR WITH:', alertMessage);
+    console.error('THROWING ERROR WITH:', alertMessage);
     throw new Error(alertMessage);
   }
 };
