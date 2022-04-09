@@ -35,6 +35,9 @@ export class User implements UserType {
   @Column({ select: false })
   password!: string;
 
+  @Column({ select: false })
+  salt: string;
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword(): Promise<void> {
@@ -45,16 +48,25 @@ export class User implements UserType {
     ) {
       try {
         // Creating a unique salt for a particular user
-        const salt = crypto.randomBytes(16).toString('hex');
+        this.salt = crypto.randomBytes(16).toString('hex');
 
         // Hash the salt and password with 1000 iterations, 64 length and sha512 digest
         const hash = crypto
-          .pbkdf2Sync(this.password, salt, 1000, 64, 'sha512')
+          .pbkdf2Sync(this.password, this.salt, 1000, 64, 'sha512')
           .toString('hex');
         this.password = hash;
       } catch (e) {
         throw new Error('Issue hashing the password.');
       }
     }
+  }
+
+  async checkPassword(password: string) {
+    // Hash the salt and password with 1000 iterations, 64 length and sha512 digest
+    const hash = crypto
+      .pbkdf2Sync(password, this.salt ?? '', 1000, 64, 'sha512')
+      .toString('hex');
+
+    return hash === this.password;
   }
 }

@@ -1,5 +1,12 @@
 import 'reflect-metadata';
-import { Connection, createConnection, FindManyOptions, In } from 'typeorm';
+import {
+  Connection,
+  createConnection,
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  In,
+} from 'typeorm';
 
 let connection: Connection | undefined = undefined;
 
@@ -23,14 +30,14 @@ const get = async <T extends unknown>(_class: any, id: string) => {
 
 const find = async <T extends unknown>(
   _class: any,
-  options?: FindManyOptions<T>,
+  options?: FindConditions<T>,
 ) => {
   return connection?.manager.find<T>(_class, options)!;
 };
 
 const findOne = async <T extends unknown>(
   _class: any,
-  options?: FindManyOptions<T>,
+  options?: FindConditions<T> | FindOneOptions<T>,
 ) => {
   return connection?.manager.findOne<T>(_class, options)!;
 };

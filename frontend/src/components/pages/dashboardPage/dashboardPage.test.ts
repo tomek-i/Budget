@@ -1,5 +1,5 @@
-import { DashboardPage } from './dashboardPage';
-describe('Tests for dashboardPage', () => {
+import { DashboardPage } from './DashboardPage';
+describe('Tests for DashboardPage', () => {
   test('todo', () => {
     fail();
   });

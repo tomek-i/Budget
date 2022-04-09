@@ -12,7 +12,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
           <label className="block text-sm font-medium mb-1" htmlFor="email">
             Email Address
           </label>
-          <input id="email" className="form-input w-full" type="email" />
+          <input
+            id="email"
+            className="form-input w-full"
+            type="email"
+            value="tomek.iwainski@gmail.com"
+          />
         </div>
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="password">
@@ -23,6 +28,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
             className="form-input w-full"
             type="password"
             autoComplete="on"
+            value={'tomek'}
           />
         </div>
       </div>

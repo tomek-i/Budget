@@ -1,11 +1,12 @@
-import { useAppDispatch } from '../../../app/hooks';
-import React, { useState } from 'react';
-import { useLoginMutation } from '../../../app/features/api/auth/auth';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { login } from '../../../app/features/user/userSlice';
-import { LoginForm } from './../../../components/molecules/LoginForm';
+import { useLoginMutation } from '../../../../app/features/api/auth/auth';
+import { login } from '../../../../app/features/user/userSlice';
+import { useAppDispatch } from '../../../../app/hooks';
+import { LoginForm } from '../../../molecules/LoginForm';
+import '../../../../css/style.scss';
 
-export interface LoginPageProps {}
+export type LoginPageProps = {};
 
 export const LoginPage: React.FC<LoginPageProps> = ({}) => {
   const dispatch = useAppDispatch();

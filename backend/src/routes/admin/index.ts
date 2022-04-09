@@ -96,7 +96,6 @@ AdminRoutes.get('/get-latest', async (req, res) => {
       order: {
         dateImported: 'ASC',
       },
-      take: 1,
     });
 
     try {

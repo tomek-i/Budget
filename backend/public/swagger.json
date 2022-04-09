@@ -229,13 +229,17 @@
 					},
 					"id": {
 						"type": "string"
+					},
+					"salt": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"password",
 					"email",
 					"username",
-					"id"
+					"id",
+					"salt"
 				],
 				"type": "object",
 				"additionalProperties": false

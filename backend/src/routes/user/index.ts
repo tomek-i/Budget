@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { UserController } from '../../controllers/userController';
-
+import auth from '../../middlewares/auth';
+import * as jwt from 'jsonwebtoken';
 export const UserRoutes = Router();
 const controller = new UserController();
 
@@ -8,6 +9,11 @@ const controller = new UserController();
 UserRoutes.get('/', async (req, res) => {
   let response = await controller.getAll();
   res.json(response);
+});
+
+UserRoutes.get('/me', auth, async (req, res) => {
+  let a: any = req;
+  res.json(a.user);
 });
 
 UserRoutes.get('/:id', async (req, res) => {

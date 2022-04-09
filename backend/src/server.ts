@@ -14,7 +14,11 @@ const app = express();
 
 //
 
-const allowedOrigins = ['http://localhost:4000', 'http://localhost:6006'];
+const allowedOrigins = [
+  'http://localhost:4000',
+  'http://localhost:6006',
+  'http://localhost:3000',
+];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };

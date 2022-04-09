@@ -5,6 +5,17 @@ import { DatabaseService } from './DatabaseService';
 const getById = async (id: string): Promise<User | undefined> => {
   return DatabaseService.get<User>(User, id);
 };
+const getByEmail = async (email: string): Promise<User | undefined> => {
+  return DatabaseService.findOne<User>(User, { email });
+};
+
+const getByIdentity = async (identity: string): Promise<User | undefined> => {
+  return DatabaseService.findOne<User>(User, {
+    select: ['username', 'email', 'password', 'salt'],
+    where: [{ username: identity }, { email: identity }],
+  });
+};
+
 const getAll = async (): Promise<User[] | undefined> => {
   return DatabaseService.getAll<User>(User);
 };
@@ -34,10 +45,18 @@ const create = async (data: UserType): Promise<User | undefined> => {
     let passwordLess: User = {
       ...newUser,
       hashPassword: newUser.hashPassword, //NOTE: why do i have to specify this?
+      checkPassword: newUser.checkPassword,
     };
     return passwordLess;
   }
   throw new Error("Couldn't create user.");
 };
 
-export const UserService = { getById, create, getAll, createMany };
+export const UserService = {
+  getById,
+  create,
+  getAll,
+  createMany,
+  getByEmail,
+  getByIdentity,
+};

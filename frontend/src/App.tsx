@@ -1,9 +1,10 @@
-import { LoginPage } from './components/pages/auth/loginpage';
 import { Fragment } from 'react';
-import ProtectedRoute from './components/atoms/ProtectedRoute';
 import { HomePage } from './components/pages/home/home';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import { SignupPage } from './components/pages/authentication/SignupPage';
+import { LoginPage } from './components/pages/authentication/LoginPage';
+import ProtectedRoute from './components/atoms/protectedRoute';
 import './css/style.scss';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Fragment>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/test" element={<div>test</div>} />
 
           <Route element={<ProtectedRoute />}>

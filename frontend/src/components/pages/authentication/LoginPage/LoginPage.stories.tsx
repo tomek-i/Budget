@@ -1,19 +1,19 @@
 import React, { ComponentProps } from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
-import { DashboardTemplate } from './dashboardTemplate';
+import { LoginPage } from './LoginPage';
 //tailwind
 import '../../../css/style.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'dashboardTemplate',
-  component: DashboardTemplate,
+  title: 'LoginPage',
+  component: LoginPage,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-} as ComponentMeta<typeof DashboardTemplate>;
+} as ComponentMeta<typeof LoginPage>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: Story<ComponentProps<typeof DashboardTemplate>> = (args) => (
-  <DashboardTemplate {...args} />
+const Template: Story<ComponentProps<typeof LoginPage>> = (args) => (
+  <LoginPage {...args} />
 );
 
 export const Default = Template.bind({});
