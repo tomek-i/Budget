@@ -9,7 +9,6 @@ export const HomePage: React.FC<HomeProps> = () => {
   const isDark = true;
   return (
     <>
-      <div className="text-2xl bg-slate-400">HOME {user.username}</div>;
       <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white">
         <div className="fixed w-full flex items-center justify-between h-14 text-white z-10">
           <div className="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-blue-800 dark:bg-gray-800 border-none">
@@ -17,9 +16,9 @@ export const HomePage: React.FC<HomeProps> = () => {
               className="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
               src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg"
             />
-            <span className="hidden md:block">ADMIN</span>
+            <span className="hidden md:block">{user.username}</span>
           </div>
-          <div className="flex justify-between items-center h-14 bg-blue-800 dark:bg-gray-800 header-right">
+          <div className="flex flex-auto   justify-between items-center h-14 bg-blue-800 dark:bg-gray-800 header-right">
             <div className="bg-white rounded flex items-center w-full max-w-xl mr-4 p-2 shadow-sm border border-gray-200">
               <button className="outline-none focus:outline-none">
                 <svg
