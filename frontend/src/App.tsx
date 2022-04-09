@@ -6,6 +6,7 @@ import { SignupPage } from './components/pages/authentication/SignupPage';
 import { LoginPage } from './components/pages/authentication/LoginPage';
 import ProtectedRoute from './components/atoms/protectedRoute';
 import './css/style.scss';
+import { TransactionPage } from './components/pages/TransactionPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<HomePage />} />
+            <Route path="/transactions" element={<TransactionPage />} />
             <Route path="/test2" element={<div>test2</div>} />
           </Route>
 

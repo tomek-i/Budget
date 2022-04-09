@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../../app/hooks';
 
 export interface HomeProps {}
@@ -155,8 +156,8 @@ export const HomePage: React.FC<HomeProps> = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/transactions"
                   className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6"
                 >
                   <span className="inline-flex justify-center items-center ml-4">
@@ -176,12 +177,12 @@ export const HomePage: React.FC<HomeProps> = () => {
                     </svg>
                   </span>
                   <span className="ml-2 text-sm tracking-wide truncate">
-                    Board
+                    Transactions
                   </span>
                   <span className="hidden md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-500 bg-indigo-50 rounded-full">
                     New
                   </span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a
