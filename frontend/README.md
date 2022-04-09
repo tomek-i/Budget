@@ -7,3 +7,5 @@ https://alphaletz.com/capterra/
 
 Admin Dashboard Design:
 https://flatlogic.com/templates/sing-app-react/demo
+
+https://tailwindcomponents.com/component/responsive-admin-template
