@@ -8,18 +8,18 @@ import { UserService } from './UserService';
 const SEED_FOLDER = '..\\..\\tools\\seed';
 
 const clearUsers = async () => {
-  const users = await DatabaseService.getAll<User>(User);
+  const users = await DatabaseService().getAll<User>(User);
   if (users.length > 0) {
     const ids = users.map((x) => x.id);
-    return DatabaseService.deleteAll(User, ids);
+    return DatabaseService().deleteAll(User, ids);
   }
 };
 
 const clearCategories = async () => {
-  const categories = await DatabaseService.getAll<Category>(Category);
+  const categories = await DatabaseService().getAll<Category>(Category);
   if (categories.length > 0) {
     const ids = categories.map((x) => x.id);
-    return DatabaseService.deleteAll(Category, ids);
+    return DatabaseService().deleteAll(Category, ids);
   }
 };
 
@@ -28,7 +28,7 @@ const seed = async () => {
 
   const seedUsers = getPromise(async () => {
     const data = await parseSeedJsonFile(User);
-    UserService.createMany(data);
+    UserService().createMany(data);
     //await DatabaseService.save(data);
     return `Saved ${data.length} users to the database`;
   });
@@ -45,7 +45,7 @@ const seed = async () => {
       }
     }
 
-    await DatabaseService.save(data);
+    await DatabaseService().save(data);
     return `Saved ${data.length} categories to the database`;
   });
   await Promise.all([seedUsers, seedCategories]);

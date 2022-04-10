@@ -19,7 +19,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
   try {
     const decoded: any = jwt.verify(token, process.env.TOKEN_KEY);
 
-    req.user = await UserService.getByEmail(decoded.email);
+    req.user = await UserService().getByEmail(decoded.email);
   } catch (err) {
     return res.status(401).send('Invalid Token.');
   }

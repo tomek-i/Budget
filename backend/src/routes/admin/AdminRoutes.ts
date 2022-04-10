@@ -1,6 +1,5 @@
 import csv from 'csv-parser';
 import { Router, Request, Response } from 'express';
-import * as express from 'express';
 import { createReadStream } from 'fs';
 import { AdminController } from '../../controllers/AdminController';
 import { ImportService } from '../../services/ImportService';
@@ -13,8 +12,8 @@ import { BankExport } from '../../entity/BankExport';
 
 export const AdminRoutes = Router();
 
-AdminRoutes.get('/last-import', async (req: Request, res: Response) => {
-  let all = await DatabaseService.getAll(BankExport);
+AdminRoutes.get('/last-import', async (_req: Request, res: Response) => {
+  let all = await DatabaseService().getAll(BankExport);
   return res.json(all);
 });
 
@@ -24,7 +23,7 @@ AdminRoutes.get('/import/:fileName', async (req: Request, res: Response) => {
   let newpath = `${process.cwd()}\\__files\\${filename}`;
 
   try {
-    await new Promise((resolve, reject) => {
+    await new Promise((_resolve, reject) => {
       let entities: Transaction[] | undefined = [];
 
       createReadStream(newpath)
@@ -33,12 +32,12 @@ AdminRoutes.get('/import/:fileName', async (req: Request, res: Response) => {
           entities?.push(new Transaction(data));
         })
         .on('end', async () => {
-          entities = await DatabaseService.save(entities);
+          entities = await DatabaseService().save(entities);
           let bankExport = new BankExport();
           bankExport.fileName = newpath;
           bankExport.dateImported = new Date();
           bankExport.imported = true;
-          await DatabaseService.save(bankExport);
+          await DatabaseService().save(bankExport);
           res.json(entities);
         })
         .on('error', reject);
@@ -47,7 +46,7 @@ AdminRoutes.get('/import/:fileName', async (req: Request, res: Response) => {
     res.status(500).send(error);
   }
 });
-AdminRoutes.get('/import', async (req: Request, res: Response) => {
+AdminRoutes.get('/import', async (_req: Request, res: Response) => {
   let filename = Westpac.GetExportdataFilename();
 
   //TODO: need to check if folder '__files' exist
@@ -55,7 +54,7 @@ AdminRoutes.get('/import', async (req: Request, res: Response) => {
   let newpath = `${process.cwd()}\\__files\\${filename}`;
 
   try {
-    await new Promise((resolve, reject) => {
+    await new Promise((_resolve, reject) => {
       let entities: Transaction[] | undefined = [];
 
       createReadStream(newpath)
@@ -64,12 +63,12 @@ AdminRoutes.get('/import', async (req: Request, res: Response) => {
           entities?.push(new Transaction(data));
         })
         .on('end', async () => {
-          entities = await DatabaseService.save(entities);
+          entities = await DatabaseService().save(entities);
           let bankExport = new BankExport();
           bankExport.fileName = newpath;
           bankExport.dateImported = new Date();
           bankExport.imported = true;
-          await DatabaseService.save(bankExport);
+          await DatabaseService().save(bankExport);
           res.json(entities);
         })
         .on('error', reject);
@@ -79,7 +78,7 @@ AdminRoutes.get('/import', async (req: Request, res: Response) => {
   }
 });
 
-AdminRoutes.get('/move', async (req: Request, res: Response) => {
+AdminRoutes.get('/move', async (_req: Request, res: Response) => {
   //Data_export_31 10 2021.csv
   let d = new Date();
   let day = d.getDate().toString().padStart(2, '0');
@@ -91,9 +90,9 @@ AdminRoutes.get('/move', async (req: Request, res: Response) => {
   return res.sendStatus(500);
 });
 
-AdminRoutes.get('/get-latest', async (req: Request, res: Response) => {
+AdminRoutes.get('/get-latest', async (_req: Request, res: Response) => {
   try {
-    let latestResult = await DatabaseService.findOne<BankExport>(BankExport, {
+    let latestResult = await DatabaseService().findOne<BankExport>(BankExport, {
       order: {
         dateImported: 'ASC',
       },
@@ -121,7 +120,7 @@ AdminRoutes.get('/get-latest', async (req: Request, res: Response) => {
 // URL: ./admin/
 AdminRoutes.get('/user/:id', AdminController.getAdminById);
 AdminRoutes.get('/user/:username', AdminController.getAdminByUsername);
-AdminRoutes.get('/', (req: Request, res: Response) => {
+AdminRoutes.get('/', (_req: Request, res: Response) => {
   res.send('OK');
 });
 

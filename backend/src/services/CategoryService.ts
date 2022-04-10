@@ -4,16 +4,16 @@ import { CategoryType } from '../../../common/types/category.type';
 import { FindManyOptions } from 'typeorm';
 
 const getById = async (id: string): Promise<Category | undefined> => {
-  return DatabaseService.get<Category>(Category, id);
+  return DatabaseService().get<Category>(Category, id);
 };
 const getAll = async (
   options?: FindManyOptions<Category>,
 ): Promise<Category[] | undefined> => {
-  return DatabaseService.getAll(Category);
+  return DatabaseService().getAll(Category);
 };
 
 const create = async (data: CategoryType): Promise<Category | undefined> => {
-  return DatabaseService.save({
+  return DatabaseService().save({
     id: '',
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -10,7 +10,7 @@ const getAdminById = async (
   if (!parseInt(req.params.id, 10)) {
     return next(); //skip this route if not a number
   }
-  res.json(await UserService.getById(req.params.id));
+  res.json(await UserService().getById(req.params.id));
 };
 
 const getAdminByUsername = async (
@@ -22,7 +22,7 @@ const getAdminByUsername = async (
   if (parseInt(req.params.username, 10)) {
     return next(); //skip this route if not a number
   }
-  res.json(await UserService.getById(req.params.username));
+  res.json(await UserService().getById(req.params.username));
 };
 export const AdminController = {
   getAdminById,
