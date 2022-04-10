@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { AdminRoutes } from './admin/AdminRoutes';
 import { UserRoutes } from './UserRoutes';
 import { CategoryRoutes } from './CategoriesRoutes';
@@ -19,7 +19,7 @@ router.use('/categories', CategoryRoutes);
 router.use('/bank', BankRoutes);
 router.use('/transactions', TransactionRoutes);
 
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
 

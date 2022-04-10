@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { DatabaseSeedController } from '../../../controllers/DatabaseSeedController';
 
 export const DatabaseRoutes = Router();

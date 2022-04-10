@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { CategoryController } from '../controllers/CategoryController';
 
 export const CategoryRoutes = Router();
 
 // URL: ./categeories/
-CategoryRoutes.get('/', async (req, res) => {
+CategoryRoutes.get('/', async (req: Request, res: Response) => {
   const controller = new CategoryController();
   let results = await controller.getAll();
 
@@ -19,32 +19,32 @@ CategoryRoutes.get('/', async (req, res) => {
   res.json(results);
 });
 
-CategoryRoutes.get('/:id', async (req, res) => {
+CategoryRoutes.get('/:id', async (req: Request, res: Response) => {
   res.send('TODO');
 });
 
 //creates a new one
-CategoryRoutes.post('/', async (req, res) => {
+CategoryRoutes.post('/', async (req: Request, res: Response) => {
   res.send('TODO');
 });
 
 //applies partial modification
-CategoryRoutes.patch('/:id', async (req, res) => {
+CategoryRoutes.patch('/:id', async (req: Request, res: Response) => {
   res.send('TODO');
 });
 //replaces all (eg all properties are to be filled out or if not passed through default values are being used?)
-CategoryRoutes.put('/:id', async (req, res) => {
+CategoryRoutes.put('/:id', async (req: Request, res: Response) => {
   res.send('TODO');
 });
 //eg can be just send a single attribute like {name:"new name"}
-CategoryRoutes.delete('/:id', async (req, res) => {
+CategoryRoutes.delete('/:id', async (req: Request, res: Response) => {
   res.send('TODO');
 });
 
-CategoryRoutes.head('/:id', async (req, res) => {
+CategoryRoutes.head('/:id', async (req: Request, res: Response) => {
   res.send('TODO');
 });
-CategoryRoutes.get('/:id/transactions', async (req, res) => {
+CategoryRoutes.get('/:id/transactions', async (req: Request, res: Response) => {
   res.send('TODO');
 });
 
