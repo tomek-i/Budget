@@ -11,7 +11,7 @@ const getByEmail = async (email: string): Promise<User | undefined> => {
 
 const getByIdentity = async (identity: string): Promise<User | undefined> => {
   return DatabaseService.findOne<User>(User, {
-    select: ['username', 'email', 'password', 'salt'],
+    select: ['username', 'email', 'password', 'salt', 'id'],
     where: [{ username: identity }, { email: identity }],
   });
 };

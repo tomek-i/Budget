@@ -50,7 +50,6 @@ export const HomePage: React.FC<HomeProps> = () => {
                 >
                   {isDark && (
                     <svg
-                      x-show={isDark}
                       width="24"
                       height="24"
                       className="fill-current text-gray-700 group-hover:text-gray-500 group-focus:text-gray-700 dark:text-gray-700 dark:group-hover:text-gray-500 dark:group-focus:text-gray-700"
@@ -69,7 +68,6 @@ export const HomePage: React.FC<HomeProps> = () => {
                   )}
                   {!isDark && (
                     <svg
-                      x-show={!isDark}
                       width="24"
                       height="24"
                       className="fill-current text-gray-700 group-hover:text-gray-500 group-focus:text-gray-700 dark:text-gray-700 dark:group-hover:text-gray-500 dark:group-focus:text-gray-700"

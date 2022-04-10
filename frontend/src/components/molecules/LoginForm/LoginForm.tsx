@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../css/style.scss';
 
-export type LoginFormProps = {};
+export type LoginFormProps = {
+  onSubmit: (username: string, password: string) => void;
+};
 
-export const LoginForm: React.FC<LoginFormProps> = ({}) => {
+export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
+  const [username, setUsername] = useState('tomek.iwainski@gmail.com');
+  const [password, setPassword] = useState('tomek');
+
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(username, password);
+      }}
+    >
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="email">
@@ -16,7 +26,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
             id="email"
             className="form-input w-full"
             type="email"
-            value="tomek.iwainski@gmail.com"
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
           />
         </div>
         <div>
@@ -28,7 +39,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
             className="form-input w-full"
             type="password"
             autoComplete="on"
-            value={'tomek'}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
         </div>
       </div>
@@ -41,12 +53,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
             Forgot Password?
           </Link>
         </div>
-        <Link
+        <button
+          type="submit"
           className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3"
-          to="/"
         >
           Sign In
-        </Link>
+        </button>
       </div>
     </form>
   );

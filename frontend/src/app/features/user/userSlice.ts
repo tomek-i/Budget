@@ -6,12 +6,7 @@ interface UserState {
   id?: number;
   username?: string;
   token?: string;
-  blocked?: boolean;
-  confirmed?: boolean;
-  createdAt?: string;
   email?: string;
-  provider?: string;
-  updatedAt?: string;
 }
 
 // Define the initial state using that type
@@ -19,12 +14,7 @@ const initialState: UserState = {
   id: undefined,
   username: undefined,
   token: undefined,
-  blocked: undefined,
-  confirmed: undefined,
-  createdAt: undefined,
   email: undefined,
-  provider: undefined,
-  updatedAt: undefined,
 };
 
 export const userSlice = createSlice({
@@ -36,7 +26,11 @@ export const userSlice = createSlice({
       console.log({ state, action: action.type, payload: action.payload });
       const payload = action.payload;
       delete state.id;
-      state.username = payload.username;
+      if (payload) {
+        state.username = payload.username;
+        state.email = payload.email;
+        state.token = payload.token;
+      }
     },
     logout: () => {
       localStorage.removeItem('accessToken');

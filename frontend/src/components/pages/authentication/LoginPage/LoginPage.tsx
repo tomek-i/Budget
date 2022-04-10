@@ -13,9 +13,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
   const [auth, { data, error, isSuccess }] = useLoginMutation();
 
   if (isSuccess) {
-    let result = login(data.user);
-    localStorage.setItem('accessToken', data.jwt);
+    let result = login(data);
+    localStorage.setItem('accessToken', data.token);
     dispatch(result);
+
     return <Navigate to="/" />;
   }
 
@@ -30,7 +31,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
 
   return (
     <>
-      <LoginForm />
+      <LoginForm
+        onSubmit={async (username, password) =>
+          await auth({ username, password })
+        }
+      />
     </>
   );
 };

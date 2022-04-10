@@ -4,8 +4,9 @@ export const authAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<any, any>({
       query(body: any) {
+        console.log({ login: body });
         return {
-          url: '/api/auth/local',
+          url: '/api/auth/login',
           method: 'POST',
           body,
         };
@@ -22,6 +23,7 @@ export const authAPI = baseAPI.injectEndpoints({
     }),
     getUser: builder.mutation<any, any>({
       query(token: string) {
+        console.log({ getUser: token });
         return {
           url: '/api/users/me',
           method: 'GET',

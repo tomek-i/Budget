@@ -52,15 +52,17 @@ const login = async (data: LoginUserData) => {
   if (!password) throw new Error('You need to provide a password.');
 
   const user = await UserService.getByIdentity(identity);
-  console.log({ user });
+
   if (user && user.checkPassword(password)) {
-    return jwt.sign(
+    const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.TOKEN_KEY!,
       {
         expiresIn: '2h',
       },
     );
+    console.log('return user dto');
+    return { ...user, token };
   }
   throw new Error('Invalid credentials.');
 };

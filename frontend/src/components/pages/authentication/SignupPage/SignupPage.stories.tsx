@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react';
 import { ComponentMeta, Story } from '@storybook/react';
 import { SignupPage } from './SignupPage';
 //tailwind
-import '../../../css/style.scss';
+import '../../../../css/style.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
