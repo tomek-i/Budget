@@ -29,6 +29,21 @@ const createMany = async (users: UserType[]): Promise<User[] | undefined> => {
   return result;
 };
 
+export type UserPatchType = {
+  id: string;
+  username?: string;
+  password?: string;
+  email?: string;
+  mobile?: string;
+};
+const save = async (data: User) => {
+  console.log({ data });
+  return DatabaseService.save(data);
+};
+const patch = async (data: UserPatchType) => {
+  console.log({ data });
+  return DatabaseService.patch(User, data);
+};
 const create = async (data: UserType): Promise<User | undefined> => {
   let user = new User();
   Object.assign(user, data);
@@ -56,6 +71,8 @@ const create = async (data: UserType): Promise<User | undefined> => {
 export const UserService = {
   getById,
   create,
+  patch,
+  save,
   getAll,
   createMany,
   getByEmail,

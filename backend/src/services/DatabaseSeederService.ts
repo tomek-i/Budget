@@ -11,7 +11,6 @@ const clearUsers = async () => {
   const users = await DatabaseService.getAll<User>(User);
   if (users.length > 0) {
     const ids = users.map((x) => x.id);
-    console.log('Deleting all users.');
     return DatabaseService.deleteAll(User, ids);
   }
 };
@@ -20,7 +19,6 @@ const clearCategories = async () => {
   const categories = await DatabaseService.getAll<Category>(Category);
   if (categories.length > 0) {
     const ids = categories.map((x) => x.id);
-    console.log('Deleting all categories.');
     return DatabaseService.deleteAll(Category, ids);
   }
 };
@@ -28,7 +26,6 @@ const clearCategories = async () => {
 const seed = async () => {
   await Promise.all([clearUsers(), clearCategories()]);
 
-  console.log('Seeding the database...');
   const seedUsers = getPromise(async () => {
     const data = await parseSeedJsonFile(User);
     UserService.createMany(data);
@@ -44,16 +41,14 @@ const seed = async () => {
         try {
           let base64 = await readFile(iconPath, 'base64');
           category.icon = `data:image/svg+xml;${base64}`;
-        } catch (error) {
-          console.error(error);
-        }
+        } catch (error) {}
       }
     }
 
     await DatabaseService.save(data);
     return `Saved ${data.length} categories to the database`;
   });
-  console.log(await Promise.all([seedUsers, seedCategories]));
+  await Promise.all([seedUsers, seedCategories]);
 };
 
 /**

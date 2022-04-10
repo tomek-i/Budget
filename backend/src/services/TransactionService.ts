@@ -11,7 +11,7 @@ const getAll = async (): Promise<Transaction[] | undefined> => {
 const patch = async (
   id: string,
   data: TransactionPatchRequest,
-): Promise<UpdateResult> => {
+) /*: Promise<UpdateResult>*/ => {
   return DatabaseService.patch(Transaction, data, { id })!;
 };
 

@@ -1,4 +1,4 @@
-import { baseAPI } from '../api';
+import { baseAPI } from './api';
 
 export const authAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
@@ -15,12 +15,13 @@ export const authAPI = baseAPI.injectEndpoints({
     register: builder.mutation<any, any>({
       query(body: any) {
         return {
-          url: '/auth/register',
+          url: '/api/auth/signup',
           method: 'POST',
           body,
         };
       },
     }),
+    //TODO: should that not go to the USER api
     getUser: builder.mutation<any, any>({
       query(token: string) {
         console.log({ getUser: token });

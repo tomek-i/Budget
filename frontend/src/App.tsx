@@ -8,6 +8,8 @@ import ProtectedRoute from './components/atoms/protectedRoute';
 import './css/style.scss';
 import { TransactionPage } from './components/pages/TransactionPage';
 import { ProfilePage } from './components/pages/ProfilePage';
+import { DashboardPage } from './components/pages/DashboardPage';
+import { PageTemplateWrapper } from './components/pages/PageTemplateWrapper';
 
 function App() {
   return (
@@ -19,10 +21,39 @@ function App() {
           <Route path="/test" element={<div>test</div>} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<HomePage />} />
-            <Route path="/transactions" element={<TransactionPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route
+              path="/"
+              element={
+                <PageTemplateWrapper>
+                  <DashboardPage />
+                </PageTemplateWrapper>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <PageTemplateWrapper>
+                  <DashboardPage />
+                </PageTemplateWrapper>
+              }
+            />
+            <Route
+              path="/transactions"
+              element={
+                <PageTemplateWrapper>
+                  <TransactionPage />
+                </PageTemplateWrapper>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PageTemplateWrapper>
+                  <ProfilePage />
+                </PageTemplateWrapper>
+              }
+            />
             <Route path="/test2" element={<div>test2</div>} />
           </Route>
 

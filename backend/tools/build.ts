@@ -5,7 +5,6 @@ async function main() {
   await build();
 }
 export default async function build() {
-  console.log('building project . . .');
   exec('tsc --project ./');
 }
 if (typeof require !== 'undefined' && require.main === module) {

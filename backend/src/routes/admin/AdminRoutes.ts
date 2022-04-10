@@ -1,13 +1,13 @@
 import csv from 'csv-parser';
 import { Router } from 'express';
 import { createReadStream } from 'fs';
-import { AdminController } from '../../controllers/adminController';
+import { AdminController } from '../../controllers/AdminController';
 import { ImportService } from '../../services/ImportService';
-import { DatabaseRoutes } from './database';
+import { DatabaseRoutes } from './database/DatabaseRoutes';
 import { Transaction } from '../../entity/Transaction';
 import { DatabaseService } from '../../services/DatabaseService';
 import { WestpacBankTransaction } from '../../types/bankTransaction';
-import { FileHelper, Westpac, Windows } from '../../utils';
+import { Westpac, Windows } from '../../utils/utils';
 import { BankExport } from '../../entity/BankExport';
 
 export const AdminRoutes = Router();

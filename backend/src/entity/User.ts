@@ -36,13 +36,16 @@ export class User implements UserType {
   password!: string;
 
   @Column({ select: false })
-  salt: string;
+  salt?: string;
 
   @Column({ unique: true })
   mobile?: string;
 
-  @Column()
-  bankConnected?: boolean;
+  @Column({ nullable: true })
+  /**
+   * ID which is linked to basiq API
+   */
+  basiqId?: string;
 
   @BeforeInsert()
   @BeforeUpdate()

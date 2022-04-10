@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { AuthService } from '../../services/AuthService';
+import { AuthService } from '../services/AuthService';
 
 export const AuthRoutes = Router();
 
@@ -8,5 +8,6 @@ AuthRoutes.post('/login', async (req, res) => {
   return res.json(result);
 });
 AuthRoutes.post('/signup', async (req, res) => {
-  return res.json({ todo: 'not implemented' });
+  let result = await AuthService.register(req.body);
+  return res.json(result);
 });

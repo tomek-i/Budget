@@ -6,6 +6,7 @@ import {
   FindManyOptions,
   FindOneOptions,
   In,
+  SaveOptions,
 } from 'typeorm';
 
 let connection: Connection | undefined = undefined;
@@ -50,8 +51,20 @@ const patch = async <T extends unknown>(
   data: any,
   criteria?: any,
 ) => {
-  return connection?.manager.update(_class, criteria, data)!;
+  return connection?.manager.update(
+    _class,
+    { id: data.id, ...criteria },
+    data,
+  )!;
 };
+
+// const save = async <T extends unknown>(
+//   _class: any,
+//   data: any[],
+//   options?: SaveOptions | undefined,
+// ) => {
+//   return connection?.manager.save<T>(data, options)!;
+// };
 
 const deleteAll = async <T extends unknown>(_class: any, ids: any[]) => {
   return remove(_class, ids)!;

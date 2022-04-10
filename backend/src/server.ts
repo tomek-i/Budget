@@ -5,14 +5,15 @@ import swaggerUi from 'swagger-ui-express';
 import { router } from './routes';
 import cors from 'cors';
 
+import winston from 'winston';
+import expressWinston from 'express-winston';
+
 dotenv.config({ path: __dirname + '/.env' });
 
 const port = process.env.PORT || 3000;
 if (!port) throw new Error('Invalid port.');
 
 const app = express();
-
-//
 
 const allowedOrigins = [
   'http://localhost:4000',
@@ -27,6 +28,24 @@ app.use(express.static('public'));
 app.use(cors(options));
 app.use(express.json());
 
+//more options here - https://github.com/bithavoc/express-winston#request-logging
+app.use(
+  expressWinston.logger({
+    transports: [new winston.transports.Console()],
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.json(),
+    ),
+    meta: false,
+    msg: 'HTTP  ',
+    expressFormat: true,
+    colorize: false,
+    ignoreRoute: function (req, res) {
+      return false;
+    },
+  }),
+);
+
 app.use(
   '/docs',
   swaggerUi.serve,
@@ -38,6 +57,19 @@ app.use(
 );
 
 app.use('/api', router);
+
+app.use(
+  expressWinston.errorLogger({
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({ dirname: 'logs' }),
+    ],
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.json(),
+    ),
+  }),
+);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

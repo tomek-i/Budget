@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { AdminRoutes } from './admin';
-import { UserRoutes } from './user';
-import { CategoryRoutes } from './categories';
-import { TransactionRoutes } from './transactions';
-import { BankRoutes } from './bank';
-import { AuthRoutes } from './auth';
+import { AdminRoutes } from './admin/AdminRoutes';
+import { UserRoutes } from './UserRoutes';
+import { CategoryRoutes } from './CategoriesRoutes';
+import { TransactionRoutes } from './TransactionRoutes';
+import { BankRoutes } from './BankRoutes';
+import { BasiqRoutes } from './BasiqRoutes';
+import { AuthRoutes } from './AuthRoutes';
 
 export const router = Router();
 
@@ -21,3 +22,6 @@ router.use('/transactions', TransactionRoutes);
 router.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+//NOTE: only for development?!
+router.use('/basiq', BasiqRoutes);

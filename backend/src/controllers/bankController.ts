@@ -16,15 +16,15 @@ import { UserService } from '../services/UserService';
 @Route('api/bank')
 @Tags('Bank')
 export class BankController {
-  @Get('/')
-  public async auth() {
-    return BankService.auth();
-  }
   public async createUser(data: CreateUserData) {
     return BankService.createUser(data);
   }
   public async createConnection(data: CreateConnectionData) {
     return BankService.createConnection(data);
+  }
+
+  public async getConsent(userId: string) {
+    return BankService.getConsent(userId);
   }
 
   public async getAccounts(userId: string) {

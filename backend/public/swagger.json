@@ -236,16 +236,15 @@
 					"mobile": {
 						"type": "string"
 					},
-					"bankConnected": {
-						"type": "boolean"
+					"basiqId": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"password",
 					"email",
 					"username",
-					"id",
-					"salt"
+					"id"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -263,26 +262,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/api/bank": {
-			"get": {
-				"operationId": "Auth",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Bank"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/api/categories": {
 			"get": {
 				"operationId": "GetAll",
@@ -430,12 +409,42 @@
 			"post": {
 				"operationId": "CreateUser",
 				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/User"
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"operationId": "PatchUser",
+				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/User"
+									"$ref": "#/components/schemas/UpdateResult"
 								}
 							}
 						}

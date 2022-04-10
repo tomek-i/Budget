@@ -5,6 +5,7 @@ export type RegisterUserData = {
   username: string;
   email: string;
   password: string;
+  mobile: string;
 };
 export type LoginUserData = {
   username?: string;
@@ -14,10 +15,10 @@ export type LoginUserData = {
 const register = async (data: RegisterUserData) => {
   // Our register logic starts here
   // Get user input
-  const { username, email, password } = data;
+  const { username, email, password, mobile } = data;
 
   // Validate user input
-  if (!(email && password && username)) {
+  if (!(email && password && username && mobile)) {
     throw new Error('All input is required');
   }
 
@@ -33,15 +34,21 @@ const register = async (data: RegisterUserData) => {
   // Creating a unique salt for a particular user
 
   // Create user in our database
-  const user = await UserService.create({ email, password, username });
+  const user = await UserService.create({ email, password, username, mobile });
 
   if (!user) throw new Error('Issue creating user.');
   if (!process.env.TOKEN_KEY) throw new Error('TOKEN_KEY is not set.');
 
-  // Create token
-  return jwt.sign({ id: user.id, email }, process.env.TOKEN_KEY, {
+  const token = jwt.sign({ id: user.id, email }, process.env.TOKEN_KEY, {
     expiresIn: '2h',
   });
+
+  return {
+    username: user.username,
+    email: user.email,
+    mobile: user.mobile,
+    token,
+  };
 };
 
 const login = async (data: LoginUserData) => {
@@ -61,7 +68,6 @@ const login = async (data: LoginUserData) => {
         expiresIn: '2h',
       },
     );
-    console.log('return user dto');
     return { ...user, token };
   }
   throw new Error('Invalid credentials.');

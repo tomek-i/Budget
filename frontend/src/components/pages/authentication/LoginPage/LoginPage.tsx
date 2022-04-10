@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useLoginMutation } from '../../../../app/features/api/auth/auth';
+import { useLoginMutation } from '../../../../app/features/api/authApi';
 import { login } from '../../../../app/features/user/userSlice';
 import { useAppDispatch } from '../../../../app/hooks';
 import { LoginForm } from '../../../molecules/LoginForm';

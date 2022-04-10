@@ -26,10 +26,8 @@ const ImportData = async (startDate?: Date, endDate?: Date) => {
   let date = startDate
     ? new Date(year, month, day)
     : new Date(year - 3, month, day);
-  console.log('launching pupeteer');
   const browser = await puppeteer.launch({ headless: false });
 
-  console.log('waiting for page');
   const page = await browser.newPage();
 
   // set user agent (override the default headless User Agent)
@@ -72,21 +70,14 @@ const ImportData = async (startDate?: Date, endDate?: Date) => {
         request.url() ===
         'https://banking.westpac.com.au/secure/banking/reportsandexports/getexportdata'
       ) {
-        // console.log('URL:', request.url());
-        // console.log('TYPE:', request.resourceType());
-        // console.log('METHOD:', request.method());
-        // console.log('REDIRECT:', request.redirectChain());
       }
 
       if (request.resourceType() == 'document') {
         request;
         let resp = request.response();
-        // console.log('      DOCUMENT URL:', resp?.url());
       }
     });
-  } catch (error) {
-    console.error('ERROR', error);
-  }
+  } catch (error) {}
   await page.click('#form-displayreportdata > div.btn-actions > button');
   await page.waitForTimeout(5 * 1000);
 
@@ -104,7 +95,6 @@ const ImportData = async (startDate?: Date, endDate?: Date) => {
   }
 
   if (alertMessage.length > 0) {
-    console.error('THROWING ERROR WITH:', alertMessage);
     throw new Error(alertMessage);
   }
 };

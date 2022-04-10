@@ -7,6 +7,7 @@ import {
   Path,
   Delete,
   SuccessResponse,
+  Patch,
 } from 'tsoa';
 import { User } from '../entity/User';
 import { UserService } from '../services/UserService';
@@ -29,6 +30,7 @@ export class UserController {
   }
 
   @Post()
+  @SuccessResponse(201)
   public async createUser(@Body() requestBody: User): Promise<User> {
     if (!requestBody) throw Error('Missing data');
     if (!requestBody.username) throw Error('Invalid username');
@@ -41,9 +43,23 @@ export class UserController {
     return result;
   }
 
+  @Patch()
+  public async patchUser(@Body() requestBody: User) {
+    if (!requestBody) throw Error('Missing data');
+
+    console.log({ PATCH: requestBody });
+    try {
+      let result = await UserService.patch(requestBody);
+      console.log({ PATCHRESULT: result });
+      // if (!result) throw new Error('Could not create user.');
+      //TODO: maybe just send back the ID ?
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   @Delete('/:id')
   @SuccessResponse(204)
-  public async deleteUser(@Path() id: string) {
-    console.log('DELETE ID:', id);
-  }
+  public async deleteUser(@Path() id: string) {}
 }

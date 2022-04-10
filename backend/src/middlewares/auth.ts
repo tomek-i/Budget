@@ -9,7 +9,6 @@ const verifyToken = async (req: any, res: any, next: any) => {
     req.headers['x-access-token'] ||
     req.headers['authorization'];
 
-  console.log(token);
   if (!token) {
     return res.status(403).send('A token is required for authentication');
   }
@@ -18,7 +17,6 @@ const verifyToken = async (req: any, res: any, next: any) => {
 
   token = token.replace('Bearer ', '');
   try {
-    console.log({ token, key: process.env.TOKEN_KEY });
     const decoded: any = jwt.verify(token, process.env.TOKEN_KEY);
 
     req.user = await UserService.getByEmail(decoded.email);

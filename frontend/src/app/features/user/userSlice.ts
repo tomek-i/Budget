@@ -7,6 +7,8 @@ interface UserState {
   username?: string;
   token?: string;
   email?: string;
+  mobile?: string;
+  basiqId?: string;
 }
 
 // Define the initial state using that type
@@ -15,6 +17,8 @@ const initialState: UserState = {
   username: undefined,
   token: undefined,
   email: undefined,
+  mobile: undefined,
+  basiqId: undefined,
 };
 
 export const userSlice = createSlice({
@@ -25,11 +29,14 @@ export const userSlice = createSlice({
     login: (state, action: PayloadAction<UserState>) => {
       console.log({ state, action: action.type, payload: action.payload });
       const payload = action.payload;
-      delete state.id;
+      // delete state.id;
+      delete state.token;
       if (payload) {
+        state.id = payload.id;
         state.username = payload.username;
         state.email = payload.email;
-        state.token = payload.token;
+        state.mobile = payload.mobile;
+        state.basiqId = payload.basiqId;
       }
     },
     logout: () => {

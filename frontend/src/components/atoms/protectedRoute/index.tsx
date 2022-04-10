@@ -1,8 +1,7 @@
-// import LoadingOverlay from 'components/molecules/LoadingOverlay';
 import React, { useEffect } from 'react';
 import { RouteProps, Navigate, Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { useGetUserMutation } from '../../../app/features/api/auth/auth';
+import { useGetUserMutation } from '../../../app/features/api/authApi';
 import { login } from '../../../app/features/user/userSlice';
 
 const ProtectedRoute: React.FC<RouteProps> = () => {

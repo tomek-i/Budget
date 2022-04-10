@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { UserController } from '../../controllers/userController';
-import auth from '../../middlewares/auth';
+import { UserController } from '../controllers/UserController';
+import auth from '../middlewares/auth';
 import * as jwt from 'jsonwebtoken';
 export const UserRoutes = Router();
 const controller = new UserController();
@@ -22,10 +22,24 @@ UserRoutes.get('/:id', async (req, res) => {
   return res.send(response);
 });
 
-UserRoutes.post('/', async (req, res) => {
-  let response = await controller.createUser(req.body);
-  if (!response) res.status(500).send({ message: "Couldn't create user." });
-  return res.send(response);
+UserRoutes.patch('/', async (req, res) => {
+  try {
+    let response = await controller.patchUser(req.body);
+    if (!response) res.status(500).send({ message: "Couldn't update user." });
+    return res.send(response);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+});
+
+UserRoutes.patch('/', async (req, res) => {
+  try {
+    let response = await controller.createUser(req.body);
+    if (!response) res.status(500).send({ message: "Couldn't create user." });
+    return res.send(response);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
 });
 
 UserRoutes.delete('/:id', async (req, res) => {
