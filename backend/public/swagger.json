@@ -232,6 +232,12 @@
 					},
 					"salt": {
 						"type": "string"
+					},
+					"mobile": {
+						"type": "string"
+					},
+					"bankConnected": {
+						"type": "boolean"
 					}
 				},
 				"required": [

@@ -46,6 +46,7 @@ const create = async (data: UserType): Promise<User | undefined> => {
       ...newUser,
       hashPassword: newUser.hashPassword, //NOTE: why do i have to specify this?
       checkPassword: newUser.checkPassword,
+      normalizeMobile: newUser.normalizeMobile,
     };
     return passwordLess;
   }

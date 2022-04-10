@@ -1,0 +1,1 @@
+export { PageTemplateWrapper } from './PageTemplateWrapper';

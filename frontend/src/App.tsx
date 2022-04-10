@@ -7,6 +7,7 @@ import { LoginPage } from './components/pages/authentication/LoginPage';
 import ProtectedRoute from './components/atoms/protectedRoute';
 import './css/style.scss';
 import { TransactionPage } from './components/pages/TransactionPage';
+import { ProfilePage } from './components/pages/ProfilePage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<HomePage />} />
             <Route path="/transactions" element={<TransactionPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/test2" element={<div>test2</div>} />
           </Route>
 

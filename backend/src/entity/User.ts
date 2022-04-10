@@ -38,6 +38,20 @@ export class User implements UserType {
   @Column({ select: false })
   salt: string;
 
+  @Column({ unique: true })
+  mobile?: string;
+
+  @Column()
+  bankConnected?: boolean;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async normalizeMobile(): Promise<void> {
+    if (this.mobile) {
+      this.mobile = this.mobile.replaceAll(' ', '');
+    }
+  }
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword(): Promise<void> {
