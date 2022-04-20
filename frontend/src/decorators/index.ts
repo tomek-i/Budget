@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 
+//https://www.typescriptlang.org/docs/handbook/decorators.html#property-decorators
+
 const tableDisplayColumnKey = Symbol('column');
 
 interface ColumnOptions {
