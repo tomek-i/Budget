@@ -49,13 +49,6 @@ const patch = async (data: UserPatchType) => {
 const create = async (data: UserType): Promise<User | undefined> => {
   let user = new User();
   Object.assign(user, data);
-  let test = {
-    id: '',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    hashPassword: user.hashPassword, //NOTE: why do i have to put it in here?!
-    ...data,
-  };
 
   let newUser = await service.save<User>(user);
   if (newUser) {
