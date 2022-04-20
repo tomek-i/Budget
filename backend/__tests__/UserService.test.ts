@@ -1,10 +1,49 @@
 import { mocked } from 'ts-jest/utils';
-import { DatabaseService } from '../src/services/DatabaseService';
+import { DeleteResult } from 'typeorm';
+
+import { User } from '../src/entity/User';
+import {
+  DatabaseService,
+  DatabaseServiceType,
+} from '../src/services/DatabaseService';
 import { UserService } from '../src/services/UserService';
 
-let x = jest.mock('../src/services/DatabaseService');
+jest.mock('../src/services/DatabaseService', () => {
+  const originalModule = jest.requireActual('../src/services/DatabaseService');
 
-const dbservice = mocked(DatabaseService);
+  return {
+    __esModule: true,
+    //...originalModule,
+
+    DatabaseService: jest.fn().mockImplementation(() => {
+      let y: DeleteResult = {
+        raw: '',
+        affected: 0,
+      };
+      let x: DatabaseServiceType = {
+        save: jest.fn().mockImplementation(() => {}), // <T>(user: T) => Promise.resolve(user),
+        getAll: jest.fn().mockImplementation(() => []), //<T>(user: T) => Promise.resolve([user]),
+        get: <T>(user: T) => Promise.resolve(user),
+        find: <T>(user: T) => Promise.resolve(user),
+        findOne: <T>(user: T) => Promise.resolve(user),
+        remove: <T>(user: T) => Promise.resolve(user),
+        patch: <T>(user: T) => Promise.resolve(user),
+        deleteAll: (_class: any, ids: any[]) => Promise.resolve(y),
+      };
+      return x;
+    }),
+  };
+});
+
+const mockedService = mocked(DatabaseService, true);
+
+let serv = UserService(mockedService());
+console.log({ save: serv.save(new User()) });
+console.log({ save: serv.getAll() });
+
+// let userService = UserService(DatabaseService());
+
+// console.log({ save: userService.save(new User()) });
 // console.log(dbservice);
 // console.log(dbservice());
 
