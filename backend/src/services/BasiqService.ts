@@ -31,16 +31,17 @@ export class Basiq {
    * @param scope the scope of the token
    * @returns a token
    */
-  async generateToken(scope: BasiqScope) {
+  async generateToken(scope: BasiqScope, userId?: string) {
     const data = qs.stringify({
       scope,
+      userId,
     });
-
+    console.log({ data });
     const response = await axios.post(`${this.apiUrl}/token`, data, {
       headers: {
         Authorization: `Basic ${process.env.BASIQ_KEY}`,
         'Content-Type': 'application/x-www-form-urlencoded',
-        'basiq-version': '2.0',
+        'basiq-version': '3.0',
       },
     });
     return response.data;
