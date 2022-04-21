@@ -21,6 +21,7 @@ export class User implements UserType {
       this.email = data.email;
       this.password = data.password;
     }
+    this.salt = this.salt = crypto.randomBytes(16).toString('hex');
   }
 
   @PrimaryGeneratedColumn('uuid')
@@ -38,7 +39,7 @@ export class User implements UserType {
   @Column({ select: false })
   salt?: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   mobile?: string;
 
   @Column({ nullable: true })

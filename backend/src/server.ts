@@ -7,10 +7,12 @@ import cors from 'cors';
 
 import winston from 'winston';
 import expressWinston from 'express-winston';
+import { AppDataSource } from './services/DatabaseService';
+import path from 'path';
 
-dotenv.config({ path: __dirname + '/.env' });
+dotenv.config({ path: path.resolve(path.join(__dirname, '../.env')) });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 if (!port) throw new Error('Invalid port.');
 
 const app = express();
@@ -71,6 +73,8 @@ app.use(
   }),
 );
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(port, async () => {
+  await AppDataSource.initialize();
+  await AppDataSource.synchronize(false);
+  console.info(`Example app listening at http://localhost:${port}`);
 });

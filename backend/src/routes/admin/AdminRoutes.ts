@@ -2,19 +2,22 @@ import csv from 'csv-parser';
 import { Router, Request, Response } from 'express';
 import { createReadStream } from 'fs';
 import { AdminController } from '../../controllers/AdminController';
-import { ImportService } from '../../services/ImportService';
+import { ImportService } from '../../services/ImportService/ImportService';
 import { DatabaseRoutes } from './database/DatabaseRoutes';
 import { Transaction } from '../../entity/Transaction';
-import { DatabaseService } from '../../services/DatabaseService';
+// import { DatabaseConnection } from '../../services/DatabaseService/DatabaseService';
 import { WestpacBankTransaction } from '../../types/bankTransaction';
-import { Westpac, Windows } from '../../utils/utils';
+
 import { BankExport } from '../../entity/BankExport';
+import { Westpac } from '../../utils/Westpac';
+import { Windows } from '../../utils/Windows';
 
 export const AdminRoutes = Router();
-
+// const repositoryBankExport = DatabaseConnection.getRepository(BankExport);
+// const repositoryTransaction = DatabaseConnection.getRepository(Transaction);
 AdminRoutes.get('/last-import', async (_req: Request, res: Response) => {
-  let all = await DatabaseService().getAll(BankExport);
-  return res.json(all);
+  // let all = await repositoryBankExport.find();
+  return res.json('all');
 });
 
 AdminRoutes.get('/import/:fileName', async (req: Request, res: Response) => {
@@ -32,12 +35,13 @@ AdminRoutes.get('/import/:fileName', async (req: Request, res: Response) => {
           entities?.push(new Transaction(data));
         })
         .on('end', async () => {
-          entities = await DatabaseService().save(entities);
+          if (!entities) return;
+          // entities = await repositoryTransaction.save(entities);
           let bankExport = new BankExport();
           bankExport.fileName = newpath;
           bankExport.dateImported = new Date();
           bankExport.imported = true;
-          await DatabaseService().save(bankExport);
+          // await repositoryBankExport.save(bankExport);
           res.json(entities);
         })
         .on('error', reject);
@@ -63,12 +67,13 @@ AdminRoutes.get('/import', async (_req: Request, res: Response) => {
           entities?.push(new Transaction(data));
         })
         .on('end', async () => {
-          entities = await DatabaseService().save(entities);
+          if (!entities) return;
+          // entities = await repositoryTransaction.save(entities);
           let bankExport = new BankExport();
           bankExport.fileName = newpath;
           bankExport.dateImported = new Date();
           bankExport.imported = true;
-          await DatabaseService().save(bankExport);
+          // await repositoryBankExport.save(bankExport);
           res.json(entities);
         })
         .on('error', reject);
@@ -92,18 +97,18 @@ AdminRoutes.get('/move', async (_req: Request, res: Response) => {
 
 AdminRoutes.get('/get-latest', async (_req: Request, res: Response) => {
   try {
-    let latestResult = await DatabaseService().findOne<BankExport>(BankExport, {
-      order: {
-        dateImported: 'ASC',
-      },
-    });
+    // let latestResult = await repositoryBankExport.findOne({
+    //   order: {
+    //     dateImported: 'ASC',
+    //   },
+    // });
 
-    try {
-      await ImportService.ImportData(latestResult?.dateImported);
-    } catch (error) {
-      res.status(500).json(error);
-      return;
-    }
+    // try {
+    //   await ImportService.ImportData(latestResult?.dateImported);
+    // } catch (error) {
+    //   res.status(500).json(error);
+    //   return;
+    // }
 
     let filename = Westpac.GetExportdataFilename();
     let newpath = `${process.cwd()}\\__files\\${filename}`;

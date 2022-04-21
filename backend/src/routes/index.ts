@@ -11,17 +11,17 @@ export const router = Router();
 
 // https://expressjs.com/en/guide/routing.html
 
-router.use('/auth', AuthRoutes);
+// router.use('/auth', AuthRoutes);
 
-router.use('/admin', AdminRoutes);
+// router.use('/admin', AdminRoutes);
 router.use('/users', UserRoutes);
-router.use('/categories', CategoryRoutes);
-router.use('/bank', BankRoutes);
-router.use('/transactions', TransactionRoutes);
+// router.use('/categories', CategoryRoutes);
+// router.use('/bank', BankRoutes);
+// router.use('/transactions', TransactionRoutes);
 
 router.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
 
 //NOTE: only for development?!
-router.use('/basiq', BasiqRoutes);
+//router.use('/basiq', BasiqRoutes);

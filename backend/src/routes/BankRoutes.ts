@@ -55,7 +55,8 @@ BankRoutes.post('/consent', async (req: Request, res: Response) => {
   try {
     console.log({ consent: req.body });
     let response = await controller.getConsent(req.body.id);
-    res.redirect(response);
+    console.log({ consentResponse: response });
+    // res.redirect(response);
   } catch (error: any) {
     res.status(500).send(error.message);
   }

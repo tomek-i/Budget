@@ -30,6 +30,7 @@ export const bankAPI = baseAPI.injectEndpoints({
     }),
     createBankConnection: builder.mutation<any, any>({
       query(body: any) {
+        console.log({ createBankConnecttionParan: body });
         return {
           url: '/api/bank/consent',
           method: 'POST',

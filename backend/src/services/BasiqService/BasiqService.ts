@@ -6,7 +6,7 @@ import {
   CreateUserData,
   CreateUserResponse,
   ListResponse,
-} from '../types/basiq';
+} from '../../types/basiq';
 
 const institution = 'AU00000';
 const loginid = 'Wentworth-Smith';
@@ -67,9 +67,13 @@ export class Basiq {
    * @returns
    */
   async getConsent(userId: string) {
-    let { access_token } = await this.generateToken(BasiqScope.CLIENT_SCOPE);
+    let { access_token } = await this.generateToken(
+      BasiqScope.CLIENT_SCOPE,
+      userId,
+    );
     console.log({ CLIENTACCESS: access_token });
-    return `${this.apiUrl}/home?userId=${userId}&token=${access_token}`;
+    return `https://consent.basiq.io/home?userId=${userId}&token=${access_token}`;
+    //return `${this.apiUrl}/home?userId=${userId}&token=${access_token}`;
   }
 
   /**

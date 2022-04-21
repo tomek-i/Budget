@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import {
   Get,
   Route,
@@ -10,56 +11,69 @@ import {
   Patch,
 } from 'tsoa';
 import { User } from '../entity/User';
-import { UserService } from '../services/UserService';
-
+import { AppDataSource } from '../services/DatabaseService';
+import { UserService } from '../services/UserService/UserService';
+//https://github.com/MakingSense/tsoa-api
 @Route('api/users')
 @Tags('User')
 export class UserController {
-  @Get('/')
-  public async getAll(): Promise<User[]> {
-    let result = await UserService().getAll();
-    if (!result) throw new Error('Could not fetch user.');
-    return result;
+  service: UserService;
+  constructor(userService: UserService) {
+    this.service = userService;
+    console.log({ this_service: this.service });
+    console.log({ this: this });
   }
 
-  @Get('/:id')
-  public async getById(@Path() id: string): Promise<User> {
-    let result = await UserService().getById(id);
-    if (!result) throw new Error('Could not fetch user.');
-    return result;
+  public async getAll(_req: Request, res: Response) {
+    console.log({ this: this });
+    let data = await this.service.getAll();
+    res.status(200).json({ user: data });
   }
 
-  @Post()
+  //@Get('/:id')
+  public async getById(req: Request, res: Response) {
+    let id = req.params.id;
+    if (!id) {
+      res.status(500).json({ error: 'missing id' });
+      return;
+    }
+    let data = await this.service.getById(id);
+    res.status(200).json({ user: data });
+  }
+
+  //@Post()
   @SuccessResponse(201)
-  public async createUser(@Body() requestBody: User): Promise<User> {
+  public async createUser(req: Request, res: Response) {
+    let requestBody = req.body;
     if (!requestBody) throw Error('Missing data');
     if (!requestBody.username) throw Error('Invalid username');
     if (!requestBody.email) throw Error('Invalid email');
     if (!requestBody.password) throw Error('Invalid password');
 
-    let result = await UserService().create(requestBody);
-    if (!result) throw new Error('Could not create user.');
-    //TODO: maybe just send back the ID ?
-    return result;
+    let user = await this.service.create(
+      new User({
+        username: requestBody.username,
+        email: requestBody.email,
+        password: requestBody.password,
+      }),
+    );
+    res.status(201).json({ user });
   }
 
-  @Patch()
-  public async patchUser(@Body() requestBody: User) {
-    if (!requestBody) throw Error('Missing data');
-
-    console.log({ PATCH: requestBody });
-    try {
-      let result = await UserService().patch(requestBody);
-      console.log({ PATCHRESULT: result });
-      // if (!result) throw new Error('Could not create user.');
-      //TODO: maybe just send back the ID ?
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
+  //@Patch()
+  public async patchUser(req: Request, res: Response) {
+    let user = new User();
+    let x = Object.assign(user, req.body);
+    let updated = await this.service.update(user);
+    res.status(200).json({ data: { user: updated } });
   }
 
-  @Delete('/:id')
+  //@Delete('/:id')
   @SuccessResponse(204)
-  public async deleteUser(@Path() id: string) {}
+  public async deleteUser(req: Request, res: Response) {
+    let user = new User();
+    user.id = req.params.id;
+    let result = await this.service.delete(user);
+    res.status(204).json({ data: result });
+  }
 }

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { DatabaseSeedService } from '../services/DatabaseSeederService';
+import { DatabaseSeedService } from '../services/SeedService/DatabaseSeederService';
 
 const clearUsers = async (req: express.Request, res: express.Response) => {
   await DatabaseSeedService.clearUsers();
