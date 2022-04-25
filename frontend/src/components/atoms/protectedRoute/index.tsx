@@ -11,10 +11,9 @@ const ProtectedRoute: React.FC<RouteProps> = () => {
   const [getUser, { data, isLoading, isError, isSuccess }] =
     useGetUserMutation();
 
-  console.log({ isSuccess, data, isError });
-
   useEffect(() => {
     if (isSuccess) {
+      console.log({ isSuccess, data });
       dispatch(login(data));
     }
   }, [isSuccess]);
@@ -22,8 +21,8 @@ const ProtectedRoute: React.FC<RouteProps> = () => {
   useEffect(() => {
     async function getCurrentUser() {
       if (!reduxToken && localToken) {
-        let r = await getUser(localToken);
-        console.log({ r });
+        const getUserFn = await getUser(localToken);
+        console.log({ getUserFn });
       }
     }
 

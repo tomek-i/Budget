@@ -1,4 +1,6 @@
 import * as jwt from 'jsonwebtoken';
+import { User } from '../entity/User';
+import { AppDataSource } from '../services/DatabaseService';
 import { UserService } from '../services/UserService/UserService';
 
 //TODO: get proper types
@@ -18,8 +20,8 @@ const verifyToken = async (req: any, res: any, next: any) => {
   token = token.replace('Bearer ', '');
   try {
     const decoded: any = jwt.verify(token, process.env.TOKEN_KEY);
-
-    //req.user = await UserService().getByEmail(decoded.email);
+    const service = new UserService(AppDataSource.getRepository(User));
+    req.user = await service.getByEmail(decoded.email);
   } catch (err) {
     return res.status(401).send('Invalid Token.');
   }

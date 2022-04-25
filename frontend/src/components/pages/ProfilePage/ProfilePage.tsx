@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  useAuthenticateBankMutation,
-  useCreateBankConnectionMutation,
-  useCreateBankUserMutation,
+  useGetBasiqConsentMutation,
+  useCreateBasiqUserMutation,
 } from '../../../app/features/api/bankApi';
 import { useUpdateUserMutation } from '../../../app/features/api/userApi';
 import { useAppSelector } from '../../../app/hooks';
@@ -26,16 +25,16 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
       startedTimeStamp,
       fulfilledTimeStamp,
     },
-  ] = useCreateBankUserMutation();
+  ] = useCreateBasiqUserMutation();
 
   const [
-    connectBank,
+    getConsent,
     {
       status: connectBankStatus,
       data: connectBankData,
       error: connectBankError,
     },
-  ] = useCreateBankConnectionMutation();
+  ] = useGetBasiqConsentMutation();
 
   const [
     updateUser,
@@ -46,21 +45,20 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
       error: userError,
     },
   ] = useUpdateUserMutation();
-  console.log({ status, data, error });
 
   // const [login, { data: BankData, error: BankError, isSuccess: BankSuccess }] =
   //   useAuthenticateBankMutation();
 
   const [username, setUsername] = useState(user.username);
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState(user.email);
-  const [mobile, setMobile] = useState(user.mobile);
+  const [email, setEmail] = useState(user.email ?? '');
+  const [mobile, setMobile] = useState(user.mobile ?? '');
 
   useEffect(() => {
     if (user) {
       setUsername(user.username);
-      setEmail(user.email);
-      setMobile(user.mobile);
+      setEmail(user.email ?? '');
+      setMobile(user.mobile ?? '');
     }
   }, [user]);
 
@@ -69,23 +67,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
       const { id } = data;
 
       updateUser({ ...user, basiqId: id });
-      console.log({ id });
     }
   }, [data]);
 
   useEffect(() => {
-    console.log({ connectBankData });
-
     // if (connectBankData) {
     //   window.location = connectBankData;
     // }
   }, [connectBankData]);
 
-  useEffect(() => {
-    console.log({ userSuccess, userUpdating, isUserError, userError });
-  }, [userSuccess]);
-
-  console.log({ user });
   return (
     <div className="mt-4 mx-4">
       <h1 className="text-4xl sm:text-5xl text-gray-800 dark:text-white font-extrabold tracking-tight">
@@ -133,7 +123,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
             id="password"
             placeholder="Password"
             className="w-100 mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 dark:text-gray-50 font-semibold focus:border-blue-500 focus:outline-none"
-            value={password}
+            value={password ?? ''}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -147,7 +137,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
             id="tel"
             placeholder="Mobile Number"
             className="w-100 mt-2 py-3 px-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-800 dark:text-gray-50 font-semibold focus:border-blue-500 focus:outline-none"
-            value={mobile}
+            value={mobile ?? ''}
             onChange={(e) => setMobile(e.target.value)}
           />
         </div>
@@ -172,26 +162,36 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
       </h1>
 
       <button
+        disabled={!!user.basiqId}
         className="md:w-32 bg-blue-600 dark:bg-gray-100 text-white dark:text-gray-800 font-bold py-3 px-6 rounded-lg mt-4 hover:bg-blue-500 dark:hover:bg-gray-200 transition ease-in-out duration-300"
         onClick={async () => {
           //step 1: register to banq
           //step 2: authenticate with bank
           //step 3: ???
-          console.log({ email, mobile });
           if (email || mobile) {
             //TODO: this is the bank/basiq login, this should always be loggedin?!
 
             //TODO: because basiq does not check if a user has been already created, if user.basiqId is set, then we should call an update
 
-            if (!user.basiqId) signup({ email, mobile });
-
-            if (user.basiqId) {
-              connectBank({ id: user.basiqId });
+            if (!user.basiqId) {
+              let sign = await signup({ email, mobile });
+              console.log({ signup: sign });
             }
           }
         }}
       >
-        CONNECT
+        SIGNUP BASIQ
+      </button>
+      <button
+        className="md:w-32 bg-blue-600 dark:bg-gray-100 text-white dark:text-gray-800 font-bold py-3 px-6 rounded-lg mt-4 hover:bg-blue-500 dark:hover:bg-gray-200 transition ease-in-out duration-300"
+        onClick={async () => {
+          console.log({ basiid: user.basiqId });
+          let consent = await getConsent({ userId: user.basiqId });
+          console.log(consent.data.url);
+          window.location = consent.data.url;
+        }}
+      >
+        CONSENT
       </button>
       <br />
       {user.basiqId}

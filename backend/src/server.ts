@@ -1,15 +1,14 @@
 import 'reflect-metadata';
-import * as dotenv from 'dotenv';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { router } from './routes';
 import cors from 'cors';
-
 import winston from 'winston';
 import expressWinston from 'express-winston';
 import { AppDataSource } from './services/DatabaseService';
 import path from 'path';
 
+import * as dotenv from 'dotenv';
 dotenv.config({ path: path.resolve(path.join(__dirname, '../.env')) });
 
 const port = process.env.PORT;

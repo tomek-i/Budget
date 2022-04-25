@@ -27,7 +27,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action: PayloadAction<UserState>) => {
-      console.log({ state, action: action.type, payload: action.payload });
       const payload = action.payload;
       // delete state.id;
       delete state.token;

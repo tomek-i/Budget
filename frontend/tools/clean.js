@@ -6,8 +6,6 @@ async function main() {
   await clean();
 }
 async function clean() {
-  console.log('Cleaning up project files ...');
-
   const dirs = [
     '../.cache',
     '../.tmp',

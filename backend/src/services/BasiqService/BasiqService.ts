@@ -5,8 +5,16 @@ import {
   CreateConnectionData,
   CreateUserData,
   CreateUserResponse,
-  ListResponse,
+  TokenResponse,
 } from '../../types/basiq';
+import {
+  ListResponse,
+  TransactionResponse,
+} from '../../../../common/types/basiq.type';
+//NOTE: for some reason my process.env is not being set here after teh server starts up
+import path from 'path';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: path.resolve(path.join(__dirname, '../../../.env')) });
 
 const institution = 'AU00000';
 const loginid = 'Wentworth-Smith';
@@ -16,6 +24,14 @@ export enum BasiqScope {
   SERVER_ACCESS = 'SERVER_ACCESS',
   CLIENT_SCOPE = 'CLIENT_SCOPE',
 }
+
+//routes we have
+/*
+
+create user :           POST /basiq/user    DATA" {email,mobile}
+get conset :            GET  /basiq/consent
+*/
+
 export class Basiq {
   apiUrl = 'https://au-api.basiq.io';
   access_token: string | null = null;
@@ -31,12 +47,14 @@ export class Basiq {
    * @param scope the scope of the token
    * @returns a token
    */
-  async generateToken(scope: BasiqScope, userId?: string) {
+  async generateToken(
+    scope: BasiqScope,
+    userId?: string,
+  ): Promise<TokenResponse> {
     const data = qs.stringify({
       scope,
       userId,
     });
-    console.log({ data });
     const response = await axios.post(`${this.apiUrl}/token`, data, {
       headers: {
         Authorization: `Basic ${process.env.BASIQ_KEY}`,
@@ -52,13 +70,12 @@ export class Basiq {
    * @returns a token with SERVER_ACCESS
    */
   private async generateServerToken() {
-    const { access_token, token_type, expires_in } = await this.generateToken(
-      BasiqScope.SERVER_ACCESS,
-    );
+    const data = await this.generateToken(BasiqScope.SERVER_ACCESS);
+    const { access_token, token_type, expires_in } = data;
     this.access_token = access_token;
     this.token_type = token_type;
     this.expires_in = expires_in;
-    return { access_token, token_type, expires_in };
+    return data;
   }
 
   /**
@@ -66,14 +83,12 @@ export class Basiq {
    * @param userId
    * @returns
    */
-  async getConsent(userId: string) {
+  async getConsentUrl(userId: string) {
     let { access_token } = await this.generateToken(
       BasiqScope.CLIENT_SCOPE,
       userId,
     );
-    console.log({ CLIENTACCESS: access_token });
     return `https://consent.basiq.io/home?userId=${userId}&token=${access_token}`;
-    //return `${this.apiUrl}/home?userId=${userId}&token=${access_token}`;
   }
 
   /**
@@ -94,22 +109,38 @@ export class Basiq {
       data: JSON.stringify(data),
     };
 
-    try {
-      const response = await axios(config);
+    const response = await axios(config);
 
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    return response.data;
   }
 
+  async getJob(jobId: string) {
+    this.ValidateToken();
+
+    if (!jobId) throw new Error('Invalid job id.');
+
+    let config: AxiosRequestConfig<any> = {
+      method: 'GET',
+      url: `${this.apiUrl}/jobs/${jobId}`,
+      headers: {
+        Authorization: `Bearer ${this.access_token}`,
+        Accept: 'application/json',
+      },
+    };
+
+    const result = await axios(config);
+    return result.data;
+  }
   /**
    * get transactions under the account of the user
    * @param userId
    * @param accountId
    * @returns
    */
-  async getTransactions(userId: string, accountId?: string) {
+  async getTransactions(
+    userId: string,
+    accountId?: string,
+  ): Promise<ListResponse<TransactionResponse>> {
     this.ValidateToken();
 
     if (!userId) throw new Error('A user id needs to be set.');
@@ -118,7 +149,7 @@ export class Basiq {
 
     if (accountId) filter = `?filter=account.id.eq('${accountId}')`;
 
-    var config: AxiosRequestConfig<any> = {
+    let config: AxiosRequestConfig<any> = {
       method: 'GET',
       url: `${this.apiUrl}/users/${userId}/transactions${filter}`,
       headers: {
@@ -126,12 +157,9 @@ export class Basiq {
         Accept: 'application/json',
       },
     };
-    try {
-      const result = await axios(config);
-      return result.data;
-    } catch (error) {
-      throw error;
-    }
+
+    const result = await axios(config);
+    return result.data;
   }
   /**
    * Gets all available accounts for the user
@@ -152,12 +180,8 @@ export class Basiq {
       },
     };
 
-    try {
-      const result = await axios(config);
-      return result.data;
-    } catch (error) {
-      throw error;
-    }
+    const result = await axios(config);
+    return result.data;
   }
   /**
    * Get the specified account information from the user
@@ -180,12 +204,8 @@ export class Basiq {
       },
     };
 
-    try {
-      const result = await axios(config);
-      return result.data;
-    } catch (error) {
-      throw error;
-    }
+    const result = await axios(config);
+    return result.data;
   }
   /**
    * Creates a user on BASIQ
@@ -196,12 +216,12 @@ export class Basiq {
     this.ValidateToken();
 
     if (!(data.email || data.mobile))
-      throw new Error('You must provide email or mobile.');
+      throw new Error('You must provide an email or mobile number.');
 
     //prefer email, remove mobile
-    if (data.email) delete data.mobile;
+    //if (data.email) delete data.mobile;
 
-    //TODO: this does not check if a user with this mobile/email already exists.
+    //TODO: this does not check if a user with this mobile/email already exists
 
     var config: AxiosRequestConfig<any> = {
       method: 'POST',
@@ -213,11 +233,12 @@ export class Basiq {
       },
       data: JSON.stringify(data),
     };
+
     try {
       const response = await axios(config);
       return response.data;
     } catch (error: any) {
-      throw error;
+      throw Error(error.message);
     }
   }
   /**

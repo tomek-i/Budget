@@ -2,21 +2,48 @@ import { Router, Request, Response } from 'express';
 import { Basiq, BasiqScope } from '../services/BasiqService/BasiqService';
 
 export const BasiqRoutes = Router();
-const api = new Basiq();
 
-BasiqRoutes.post('/token/server', async (req: Request, res: Response) => {
-  res.json(await api.generateToken(BasiqScope.SERVER_ACCESS));
+const basiq = new Basiq();
+
+BasiqRoutes.post('/token', async (req: Request, res: Response) => {
+  const tokenType = req.body.token;
+  if (!(tokenType && (tokenType === 'server' || tokenType === 'client')))
+    res.status(500).json({ error: 'Invalid token request.' });
+
+  let scope: BasiqScope | undefined = undefined;
+  if (tokenType === 'server') {
+    scope = BasiqScope.SERVER_ACCESS;
+  } else if (tokenType === 'client') {
+    scope = BasiqScope.SERVER_ACCESS;
+    if (!req.body.id) {
+      res.status(500).json({ error: 'Invalid client token request.' });
+    }
+  }
+  const data = await basiq.generateToken(scope!, req.body.id);
+  res.status(200).json({ data });
 });
-BasiqRoutes.post('/token/client', async (req: Request, res: Response) => {
-  const token = await api.generateToken(BasiqScope.CLIENT_SCOPE, req.body.id);
-  const url = `https://consent.basiq.io/home?userId=${req.body.id}&token=${token.access_token}`;
-  console.log({ url });
-  res.redirect(url);
-});
+
 BasiqRoutes.post('/user', async (req: Request, res: Response) => {
-  res.json(await api.createUser(req.body));
+  const data = await basiq.createUser(req.body);
+  res.status(201).json(data);
 });
 
-BasiqRoutes.get('/consent', async (req: Request, res: Response) => {
-  res.json(await api.getConsent(req.body.id));
+BasiqRoutes.post('/consent', async (req: Request, res: Response) => {
+  const consent = await basiq.getConsentUrl(req.body.userId);
+  res.status(200).json({ url: consent });
 });
+
+BasiqRoutes.get('/job/:jobId', async (req: Request, res: Response) => {
+  const jobInfo = await basiq.getJob(req.params.jobId);
+  res.status(200).json({ data: jobInfo });
+});
+BasiqRoutes.get(
+  '/transactions/:userId',
+  async (req: Request, res: Response) => {
+    const transactions = await basiq.getTransactions(
+      req.params.userId,
+      req.params.accountId,
+    );
+    res.status(200).json(transactions);
+  },
+);
