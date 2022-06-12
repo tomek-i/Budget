@@ -14,7 +14,7 @@ BasiqRoutes.post('/token', async (req: Request, res: Response) => {
   if (tokenType === 'server') {
     scope = BasiqScope.SERVER_ACCESS;
   } else if (tokenType === 'client') {
-    scope = BasiqScope.SERVER_ACCESS;
+    scope = BasiqScope.CLIENT_SCOPE;
     if (!req.body.id) {
       res.status(500).json({ error: 'Invalid client token request.' });
     }
@@ -24,6 +24,7 @@ BasiqRoutes.post('/token', async (req: Request, res: Response) => {
 });
 
 BasiqRoutes.post('/user', async (req: Request, res: Response) => {
+  //TODO: sanitize
   const data = await basiq.createUser(req.body);
   res.status(201).json(data);
 });
