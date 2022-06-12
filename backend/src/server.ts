@@ -28,25 +28,27 @@ const options: cors.CorsOptions = {
 app.use(express.static('public'));
 app.use(cors(options));
 app.use(express.json());
+//app.use(require('sanitize').middleware);
 
 //more options here - https://github.com/bithavoc/express-winston#request-logging
-app.use(
-  expressWinston.logger({
-    transports: [new winston.transports.Console()],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json(),
-    ),
-    meta: false,
-    msg: 'HTTP  ',
-    expressFormat: true,
-    colorize: false,
-    ignoreRoute: function (req, res) {
-      return false;
-    },
-  }),
-);
-
+if (process.env.NODE_ENV !== 'test') {
+  app.use(
+    expressWinston.logger({
+      transports: [new winston.transports.Console()],
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json(),
+      ),
+      meta: false,
+      msg: 'HTTP  ',
+      expressFormat: true,
+      colorize: false,
+      ignoreRoute: function (req, res) {
+        return false;
+      },
+    }),
+  );
+}
 app.use(
   '/docs',
   swaggerUi.serve,
@@ -59,21 +61,24 @@ app.use(
 
 app.use('/api', router);
 
-app.use(
-  expressWinston.errorLogger({
-    transports: [
-      new winston.transports.Console(),
-      new winston.transports.File({ dirname: 'logs' }),
-    ],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json(),
-    ),
-  }),
-);
+if (process.env.NODE_ENV !== 'test') {
+  app.use(
+    expressWinston.errorLogger({
+      transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ dirname: 'logs' }),
+      ],
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json(),
+      ),
+    }),
+  );
+}
 
-app.listen(port, async () => {
+export const server = app.listen(port, async () => {
   await AppDataSource.initialize();
   await AppDataSource.synchronize(false);
-  console.info(`Example app listening at http://localhost:${port}`);
+  if (process.env.NODE_ENV !== 'test')
+    console.info(`Example app listening at http://localhost:${port}`);
 });
