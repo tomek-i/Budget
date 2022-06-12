@@ -64,7 +64,7 @@ const login = async (data: LoginUserData) => {
   const userService = new UserService(AppDataSource.getRepository(User));
   const user = await userService.getByEmail(identity);
 
-  if (user && user.checkPassword(password)) {
+  if (user && (await user.checkPassword(password))) {
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.TOKEN_KEY!,
