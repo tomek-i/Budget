@@ -1,16 +1,17 @@
 import 'reflect-metadata';
-import * as dotenv from 'dotenv';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { router } from './routes';
 import cors from 'cors';
-
 import winston from 'winston';
 import expressWinston from 'express-winston';
+import { AppDataSource } from './services/DatabaseService';
+import path from 'path';
 
-dotenv.config({ path: __dirname + '/.env' });
+import * as dotenv from 'dotenv';
+dotenv.config({ path: path.resolve(path.join(__dirname, '../.env')) });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 if (!port) throw new Error('Invalid port.');
 
 const app = express();
@@ -27,25 +28,27 @@ const options: cors.CorsOptions = {
 app.use(express.static('public'));
 app.use(cors(options));
 app.use(express.json());
+//app.use(require('sanitize').middleware);
 
 //more options here - https://github.com/bithavoc/express-winston#request-logging
-app.use(
-  expressWinston.logger({
-    transports: [new winston.transports.Console()],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json(),
-    ),
-    meta: false,
-    msg: 'HTTP  ',
-    expressFormat: true,
-    colorize: false,
-    ignoreRoute: function (req, res) {
-      return false;
-    },
-  }),
-);
-
+if (process.env.NODE_ENV !== 'test') {
+  app.use(
+    expressWinston.logger({
+      transports: [new winston.transports.Console()],
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json(),
+      ),
+      meta: false,
+      msg: 'HTTP  ',
+      expressFormat: true,
+      colorize: false,
+      ignoreRoute: function (req, res) {
+        return false;
+      },
+    }),
+  );
+}
 app.use(
   '/docs',
   swaggerUi.serve,
@@ -58,19 +61,24 @@ app.use(
 
 app.use('/api', router);
 
-app.use(
-  expressWinston.errorLogger({
-    transports: [
-      new winston.transports.Console(),
-      new winston.transports.File({ dirname: 'logs' }),
-    ],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json(),
-    ),
-  }),
-);
+if (process.env.NODE_ENV !== 'test') {
+  app.use(
+    expressWinston.errorLogger({
+      transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ dirname: 'logs' }),
+      ],
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json(),
+      ),
+    }),
+  );
+}
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+export const server = app.listen(port, async () => {
+  await AppDataSource.initialize();
+  await AppDataSource.synchronize(false);
+  if (process.env.NODE_ENV !== 'test')
+    console.info(`Example app listening at http://localhost:${port}`);
 });

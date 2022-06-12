@@ -1,39 +1,32 @@
-import { BankService } from '../services/BankService';
 import { CreateConnectionData, CreateUserData } from '../types/basiq';
-import {
-  Get,
-  Route,
-  Tags,
-  Post,
-  Body,
-  Path,
-  Delete,
-  SuccessResponse,
-} from 'tsoa';
-import { User } from '../entity/User';
-import { UserService } from '../services/UserService';
+import { Route, Tags } from 'tsoa';
+import { Basiq } from '../services/BasiqService';
 
 @Route('api/bank')
 @Tags('Bank')
 export class BankController {
+  basiqService: Basiq;
+  constructor() {
+    this.basiqService = new Basiq();
+  }
   public async createUser(data: CreateUserData) {
-    return BankService.createUser(data);
+    return this.basiqService.createUser(data);
   }
   public async createConnection(data: CreateConnectionData) {
-    return BankService.createConnection(data);
+    return this.basiqService.createConnection(data);
   }
 
   public async getConsent(userId: string) {
-    return BankService.getConsent(userId);
+    return this.basiqService.getConsentUrl(userId);
   }
 
   public async getAccounts(userId: string) {
-    return BankService.getAccounts(userId);
+    return this.basiqService.getAccounts(userId);
   }
   public async getAccount(userId: string, accountId: string) {
-    return BankService.getAccount(userId, accountId);
+    return this.basiqService.getAccount(userId, accountId);
   }
   public async getTransactions(userId: string, accountId?: string) {
-    return BankService.getTransactions(userId, accountId);
+    return this.basiqService.getTransactions(userId, accountId);
   }
 }

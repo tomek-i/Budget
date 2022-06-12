@@ -1,5 +1,8 @@
 import { baseAPI } from './api';
-
+import {
+  ListResponse,
+  TransactionResponse,
+} from '../../../../../common/types/basiq.type';
 export type BankCreateUserData = {
   email?: string;
   mobile?: string;
@@ -16,36 +19,35 @@ export type BankCreateUserResponse = {
 };
 export const bankAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
-    createBankUser: builder.mutation<
+    createBasiqUser: builder.mutation<
       BankCreateUserResponse,
       BankCreateUserData
     >({
       query(body) {
         return {
-          url: '/api/bank/createUser',
+          url: '/api/basiq/user',
           method: 'POST',
           body,
         };
       },
     }),
-    createBankConnection: builder.mutation<any, any>({
+    getBasiqConsent: builder.mutation<any, any>({
       query(body: any) {
         return {
-          url: '/api/bank/consent',
+          url: '/api/basiq/consent',
           method: 'POST',
           body,
         };
       },
     }),
-    authenticateBank: builder.mutation<any, any>({
-      query(token: string) {
-        console.log({ authenticate: token });
+    getBasiqUserTransactions: builder.mutation<
+      ListResponse<TransactionResponse>,
+      string
+    >({
+      query(userId) {
         return {
-          url: '/api/bank/auth',
+          url: `/api/basiq/transactions/${userId}`,
           method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
       },
     }),
@@ -53,7 +55,7 @@ export const bankAPI = baseAPI.injectEndpoints({
 });
 
 export const {
-  useAuthenticateBankMutation,
-  useCreateBankUserMutation,
-  useCreateBankConnectionMutation,
+  useCreateBasiqUserMutation,
+  useGetBasiqConsentMutation,
+  useGetBasiqUserTransactionsMutation,
 } = bankAPI;

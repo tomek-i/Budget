@@ -12,6 +12,5 @@ export const BalanceCell = ({ value }: { value: number }) => {
 };
 
 export const CategoryCell = (items: string[]) => {
-  console.log('ITEMS: ', items);
   return <Dropdown items={items} />;
 };

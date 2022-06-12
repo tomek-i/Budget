@@ -1,6 +1,8 @@
 export type CreateUserData = {
   email?: string;
   mobile?: string;
+  firstname?: string;
+  lastname?: string;
 };
 export type CreateUserResponse = {
   type: string;
@@ -20,44 +22,13 @@ export type CreateConnectionData = {
   password: string;
   institution: InstitutionData;
 };
-export type Link = {
-  self: string;
-  account?: string;
-  institution?: string;
-  connection?: string;
-};
+
 export type PaginatedResponse<T> = {
   type: string;
   count: number;
   size: number;
   data: T;
   links: Link;
-};
-export type TransactionResponse = {
-  type: string;
-  id: string;
-  status: string;
-  description: string;
-  amount: string;
-  account: string;
-  balance: string;
-  direction: string;
-  class: string;
-  institution: string;
-  connection: string;
-  enrich?: any;
-  transactionDate: string;
-  postDate: string;
-  subClass?: any;
-  links: Link;
-};
-
-export type ListResponse<T> = {
-  type: 'list';
-  data: T[];
-  links: {
-    self: string;
-  };
 };
 
 export type Account = {
@@ -88,4 +59,9 @@ export type Account = {
     transactions: string;
     self: string;
   };
+};
+export type TokenResponse = {
+  access_token: string;
+  expires_in: number;
+  token_type: string;
 };

@@ -1,65 +1,41 @@
-import {
-  Get,
-  Route,
-  Tags,
-  Post,
-  Body,
-  Path,
-  Delete,
-  SuccessResponse,
-  Patch,
-} from 'tsoa';
+import { Get, Route, Tags, Delete, SuccessResponse } from 'tsoa';
 import { User } from '../entity/User';
-import { UserService } from '../services/UserService';
-
+import { UserService } from '../services/UserService/UserService';
+//https://github.com/MakingSense/tsoa-api
 @Route('api/users')
 @Tags('User')
 export class UserController {
-  @Get('/')
-  public async getAll(): Promise<User[]> {
-    let result = await UserService().getAll();
-    if (!result) throw new Error('Could not fetch user.');
-    return result;
+  service: UserService;
+  constructor(userService: UserService) {
+    this.service = userService;
+  }
+
+  @Get()
+  public async getAll() {
+    return this.service.getAll();
   }
 
   @Get('/:id')
-  public async getById(@Path() id: string): Promise<User> {
-    let result = await UserService().getById(id);
-    if (!result) throw new Error('Could not fetch user.');
-    return result;
+  public async getById(id: string) {
+    return await this.service.getById(id);
   }
 
-  @Post()
+  //@Post() <-- throws error
   @SuccessResponse(201)
-  public async createUser(@Body() requestBody: User): Promise<User> {
-    if (!requestBody) throw Error('Missing data');
-    if (!requestBody.username) throw Error('Invalid username');
-    if (!requestBody.email) throw Error('Invalid email');
-    if (!requestBody.password) throw Error('Invalid password');
-
-    let result = await UserService().create(requestBody);
-    if (!result) throw new Error('Could not create user.');
-    //TODO: maybe just send back the ID ?
-    return result;
+  public async createUser(user: User) {
+    return this.service.create(user);
   }
 
-  @Patch()
-  public async patchUser(@Body() requestBody: User) {
-    if (!requestBody) throw Error('Missing data');
-
-    console.log({ PATCH: requestBody });
-    try {
-      let result = await UserService().patch(requestBody);
-      console.log({ PATCHRESULT: result });
-      // if (!result) throw new Error('Could not create user.');
-      //TODO: maybe just send back the ID ?
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
+  //@Patch() <-- throws error
+  public async patchUser(user: User) {
+    return this.service.update(user);
   }
 
   @Delete('/:id')
   @SuccessResponse(204)
-  public async deleteUser(@Path() id: string) {}
+  public async deleteUser(id: string) {
+    let user = new User();
+    user.id = id;
+    return this.service.delete(user);
+  }
 }

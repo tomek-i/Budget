@@ -27,8 +27,6 @@ export const SignupPage: React.FC<SignupPageProps> = ({}) => {
     },
   ] = useRegisterMutation();
 
-  console.log({ requestId, status, data, error, endpointName });
-
   if (status === QueryStatus.fulfilled) {
     //TODO: so maybe we can send here another dispatch to signup with basiq??
     dispatch(login(data));

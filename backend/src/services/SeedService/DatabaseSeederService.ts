@@ -1,36 +1,35 @@
 import path from 'path';
-import { Category } from '../entity/Category';
-import { User } from '../entity/User';
-import { DatabaseService } from './DatabaseService';
+import { Category } from '../../entity/Category';
+import { User } from '../../entity/User';
 import { readFile } from 'fs/promises';
-import { UserService } from './UserService';
+import { UserService } from '../UserService/UserService';
 
 const SEED_FOLDER = '..\\..\\tools\\seed';
 
 const clearUsers = async () => {
-  const users = await DatabaseService().getAll<User>(User);
-  if (users.length > 0) {
-    const ids = users.map((x) => x.id);
-    return DatabaseService().deleteAll(User, ids);
-  }
+  // const users = await DatabaseService().getAll<User>(User);
+  // if (users.length > 0) {
+  //   const ids = users.map((x) => x.id);
+  //   return DatabaseService().deleteAll(User, ids);
+  // }
 };
 
 const clearCategories = async () => {
-  const categories = await DatabaseService().getAll<Category>(Category);
-  if (categories.length > 0) {
-    const ids = categories.map((x) => x.id);
-    return DatabaseService().deleteAll(Category, ids);
-  }
+  // const categories = await DatabaseService().getAll<Category>(Category);
+  // if (categories.length > 0) {
+  //   const ids = categories.map((x) => x.id);
+  //   return DatabaseService().deleteAll(Category, ids);
+  // }
 };
 
 const seed = async () => {
   await Promise.all([clearUsers(), clearCategories()]);
 
   const seedUsers = getPromise(async () => {
-    const data = await parseSeedJsonFile(User);
-    UserService().createMany(data);
-    //await DatabaseService.save(data);
-    return `Saved ${data.length} users to the database`;
+    // const data = await parseSeedJsonFile(User);
+    // UserService(DatabaseService()).createMany(data);
+    // //await DatabaseService.save(data);
+    // return `Saved ${data.length} users to the database`;
   });
 
   const seedCategories = getPromise(async () => {
@@ -45,7 +44,7 @@ const seed = async () => {
       }
     }
 
-    await DatabaseService().save(data);
+    //await DatabaseService().save(data);
     return `Saved ${data.length} categories to the database`;
   });
   await Promise.all([seedUsers, seedCategories]);

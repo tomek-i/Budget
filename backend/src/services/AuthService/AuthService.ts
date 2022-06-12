@@ -1,17 +1,9 @@
-import { UserService } from './UserService';
+import { UserService } from '../UserService/UserService';
 import * as jwt from 'jsonwebtoken';
-
-export type RegisterUserData = {
-  username: string;
-  email: string;
-  password: string;
-  mobile: string;
-};
-export type LoginUserData = {
-  username?: string;
-  email?: string;
-  password: string;
-};
+import { LoginUserData, RegisterUserData } from '../../types/authentication';
+import { AppDataSource } from '../DatabaseService';
+import { User } from '../../entity/User';
+// import { DatabaseService } from '../DatabaseService';
 
 /**
  * Signup for a new account
@@ -27,23 +19,26 @@ const register = async (data: RegisterUserData) => {
   if (!(email && password && username && mobile)) {
     throw new Error('All input is required');
   }
+  const userService = new UserService(AppDataSource.getRepository(User));
 
   // check if user already exist
   // Validate if user exist in our database
-  const oldUser = await UserService().getByEmail(email);
+  const oldUser = await userService.getByEmail(email);
 
   if (oldUser) {
-    //   return res.status(409).send('User Already Exist. Please Login');
+    //return res.status(409).send('User Already Exist. Please Login');
     throw new Error('409: User Already Exist');
   }
 
   // Create user in our database
-  const user = await UserService().create({
-    email,
-    password,
-    username,
-    mobile,
-  });
+  const user = await userService.create(
+    new User({
+      email,
+      password,
+      username,
+      mobile,
+    }),
+  );
 
   if (!user) throw new Error('Issue creating user.');
   if (!process.env.TOKEN_KEY) throw new Error('TOKEN_KEY is not set.');
@@ -66,10 +61,10 @@ const login = async (data: LoginUserData) => {
 
   if (!identity) throw new Error('You need to provide a username or email.');
   if (!password) throw new Error('You need to provide a password.');
+  const userService = new UserService(AppDataSource.getRepository(User));
+  const user = await userService.getByEmail(identity);
 
-  const user = await UserService().getByIdentity(identity);
-
-  if (user && user.checkPassword(password)) {
+  if (user && (await user.checkPassword(password))) {
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.TOKEN_KEY!,

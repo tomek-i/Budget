@@ -1,6 +1,6 @@
 import { Get, Route, Tags } from 'tsoa';
 import { Category } from '../entity/Category';
-import { CategoryService } from '../services/CategoryService';
+import { CategoryService } from '../services/CategoryService/CategoryService';
 
 @Route('api/categories')
 @Tags('Category')

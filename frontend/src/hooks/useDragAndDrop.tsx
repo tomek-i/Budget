@@ -8,7 +8,7 @@ import { useState } from 'react';
 export const useDragAndDrop = (columns: any) => {
   const DATATRANSFERID = 'colIdx';
 
-  const [dragOver, setDragOver] = useState('');
+  const [dragover, setDragOver] = useState('');
 
   const onDragStart = (e: React.DragEvent<HTMLElement>) => {
     const { id } = e.target as HTMLElement;
@@ -50,6 +50,6 @@ export const useDragAndDrop = (columns: any) => {
     onDragOver,
     onDragStart,
     onDrop,
-    dragOver,
+    dragover,
   };
 };

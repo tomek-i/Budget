@@ -1,5 +1,5 @@
 import React from 'react';
-import PaginationButton from '../atoms/PaginationButton';
+import PaginationButton from '../atoms/PaginationButtonOld';
 
 interface PaginationOptions {
   pageCount: number;
@@ -12,7 +12,7 @@ interface PaginationOptions {
   gotoPage: (page: number) => void;
 }
 //TODO: change into React Component not function
-export const PaginationControl = (options: PaginationOptions) => {
+export const PaginationControlOld = (options: PaginationOptions) => {
   return (
     <div
       className={`${

@@ -149,38 +149,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ObjectLiteral": {
-				"description": "Interface of the simple literal object with any string keys.",
-				"properties": {},
-				"type": "object",
-				"additionalProperties": {}
-			},
-			"UpdateResult": {
-				"description": "Result object returned by UpdateQueryBuilder execution.",
-				"properties": {
-					"raw": {
-						"description": "Raw SQL result returned by executed query."
-					},
-					"affected": {
-						"type": "number",
-						"format": "double",
-						"description": "Number of affected rows/documents\nNot all drivers support this"
-					},
-					"generatedMaps": {
-						"items": {
-							"$ref": "#/components/schemas/ObjectLiteral"
-						},
-						"type": "array",
-						"description": "Generated values returned by a database.\nHas entity-like structure (not just column database name and values)."
-					}
-				},
-				"required": [
-					"raw",
-					"generatedMaps"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"TransactionPatchRequest": {
 				"properties": {
 					"category": {
@@ -218,6 +186,15 @@
 			},
 			"User": {
 				"properties": {
+					"lastname": {
+						"type": "string"
+					},
+					"fisrtname": {
+						"type": "string"
+					},
+					"mobile": {
+						"type": "string"
+					},
 					"password": {
 						"type": "string"
 					},
@@ -233,9 +210,6 @@
 					"salt": {
 						"type": "string"
 					},
-					"mobile": {
-						"type": "string"
-					},
 					"basiqId": {
 						"type": "string"
 					}
@@ -245,6 +219,25 @@
 					"email",
 					"username",
 					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteResult": {
+				"description": "Result object returned by DeleteQueryBuilder execution.",
+				"properties": {
+					"raw": {
+						"description": "Raw SQL result returned by executed query."
+					},
+					"affected": {
+						"type": "number",
+						"format": "double",
+						"nullable": true,
+						"description": "Number of affected rows/documents\nNot all drivers support this"
+					}
+				},
+				"required": [
+					"raw"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -349,9 +342,7 @@
 						"description": "Ok",
 						"content": {
 							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UpdateResult"
-								}
+								"schema": {}
 							}
 						}
 					}
@@ -405,66 +396,6 @@
 				],
 				"security": [],
 				"parameters": []
-			},
-			"post": {
-				"operationId": "CreateUser",
-				"responses": {
-					"201": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/User"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"User"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/User"
-							}
-						}
-					}
-				}
-			},
-			"patch": {
-				"operationId": "PatchUser",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/UpdateResult"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"User"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/User"
-							}
-						}
-					}
-				}
 			}
 		},
 		"/api/users/{id}": {
@@ -501,7 +432,14 @@
 				"operationId": "DeleteUser",
 				"responses": {
 					"204": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeleteResult"
+								}
+							}
+						}
 					}
 				},
 				"tags": [

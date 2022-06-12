@@ -1,6 +1,6 @@
 import { Body, Get, Patch, Path, Route, Tags } from 'tsoa';
 import { Transaction, TransactionPatchRequest } from '../entity/Transaction';
-import { TransactionService } from '../services/TransactionService';
+import { TransactionService } from '../services/TransactionService/TransactionService';
 
 @Route('api/transactions')
 @Tags('Transaction')

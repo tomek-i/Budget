@@ -15,13 +15,12 @@ router.use('/auth', AuthRoutes);
 
 router.use('/admin', AdminRoutes);
 router.use('/users', UserRoutes);
-router.use('/categories', CategoryRoutes);
-router.use('/bank', BankRoutes);
-router.use('/transactions', TransactionRoutes);
+router.use('/basiq', BasiqRoutes);
+// router.use('/categories', CategoryRoutes);
+// router.use('/bank', BankRoutes);
+// router.use('/transactions', TransactionRoutes);
 
+//NOTE: only for development?!
 router.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
-
-//NOTE: only for development?!
-router.use('/basiq', BasiqRoutes);

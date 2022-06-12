@@ -1,57 +1,56 @@
 import { Router, Request, Response } from 'express';
 import { UserController } from '../controllers/UserController';
+import { User } from '../entity/User';
 import auth from '../middlewares/auth';
-import * as jwt from 'jsonwebtoken';
-export const UserRoutes = Router();
-const controller = new UserController();
+import { AppDataSource } from '../services/DatabaseService';
+import { UserService } from '../services/UserService';
 
-//URL: ./users/
-UserRoutes.get('/', async (req: Request, res: Response) => {
-  let response = await controller.getAll();
-  res.json(response);
-});
+export const UserRoutes = Router();
+
+const controller = new UserController(
+  new UserService(AppDataSource.getRepository(User)),
+);
 
 UserRoutes.get('/me', auth, async (req: Request, res: Response) => {
-  let a: any = req;
-  res.json(a.user);
+  console.log('ME CALLED');
+  let authRequest: any = req;
+  res.status(200).json(authRequest.user);
 });
 
-UserRoutes.get('/:id', async (req: Request, res: Response) => {
-  const response = await controller.getById(req.params.id);
-  if (!response) res.status(404).send({ message: 'No user found' });
-  return res.send(response);
+UserRoutes.get('/', async (_req, res) => {
+  const data = await controller.getAll();
+  res.status(200).json({ data });
 });
 
-UserRoutes.patch('/', async (req: Request, res: Response) => {
-  try {
-    let response = await controller.patchUser(req.body);
-    if (!response) res.status(500).send({ message: "Couldn't update user." });
-    return res.send(response);
-  } catch (error) {
-    return res.status(500).json(error);
+UserRoutes.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  if (!id) {
+    res.status(500).json({ error: 'missing id' });
+    return;
   }
+  const data = await controller.getById(id);
+  res.status(200).json({ data });
+});
+UserRoutes.patch('/', async (req, res) => {
+  const user = new User();
+  Object.assign(user, req.body);
+
+  const data = await controller.patchUser(user);
+  res.status(200).json({ data });
 });
 
-UserRoutes.patch('/', async (req: Request, res: Response) => {
-  try {
-    let response = await controller.createUser(req.body);
-    if (!response) res.status(500).send({ message: "Couldn't create user." });
-    return res.send(response);
-  } catch (error) {
-    return res.status(500).json(error);
+UserRoutes.post('/', async (req, res) => {
+  if (!(req.body && req.body.username && req.body.email && req.body.password)) {
+    res.status(500).json({ error: 'invalid request' });
+    return;
   }
-});
 
-UserRoutes.delete('/:id', async (req: Request, res: Response) => {
-  const controller = new UserController();
-  await controller.deleteUser(req.params.id);
-  /*
-    '204':
-      description: Deleted
-    '404':
-      description: id not found
-    '401':
-      description: Unauthorized
-  */
-  res.sendStatus(204);
+  const user = new User(req.body);
+  const data = await controller.createUser(user);
+  res.status(201).json({ data });
+});
+UserRoutes.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  const data = await controller.deleteUser(id);
+  res.status(204).json({ data });
 });
