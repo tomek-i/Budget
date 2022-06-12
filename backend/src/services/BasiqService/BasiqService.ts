@@ -16,9 +16,9 @@ import path from 'path';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: path.resolve(path.join(__dirname, '../../../.env')) });
 
-const institution = 'AU00000';
-const loginid = 'Wentworth-Smith';
-const loginpassword = 'whislter';
+// const institution = 'AU00000';
+// const loginid = 'Wentworth-Smith';
+// const loginpassword = 'whislter';
 
 export enum BasiqScope {
   SERVER_ACCESS = 'SERVER_ACCESS',

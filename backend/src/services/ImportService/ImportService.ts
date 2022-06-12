@@ -5,9 +5,9 @@ import puppeteer from 'puppeteer';
 /**
  * Importing via Pupeteer going to download CSV file
  */
-const WestpacImportDataCSV = async () => {};
+// const WestpacImportDataCSV = async () => {};
 
-const WestpacImportDataScanWebsites = async () => {};
+// const WestpacImportDataScanWebsites = async () => {};
 
 const clear = async (page: puppeteer.Page) => {
   await page.keyboard.down('Control');

@@ -1,19 +1,5 @@
-import * as express from 'express';
-import {
-  Get,
-  Route,
-  Tags,
-  Post,
-  Body,
-  Path,
-  Delete,
-  SuccessResponse,
-  Patch,
-  Request,
-  Response,
-} from 'tsoa';
+import { Get, Route, Tags, Delete, SuccessResponse } from 'tsoa';
 import { User } from '../entity/User';
-import { AppDataSource } from '../services/DatabaseService';
 import { UserService } from '../services/UserService/UserService';
 //https://github.com/MakingSense/tsoa-api
 @Route('api/users')
