@@ -4,5 +4,5 @@ import { DatabaseSeedController } from '../../../controllers/DatabaseSeedControl
 export const DatabaseRoutes = Router();
 
 // URL: ./admin/db/
-DatabaseRoutes.get('/seed', DatabaseSeedController.seed);
-DatabaseRoutes.get('/clear/users', DatabaseSeedController.clearUsers);
+//DatabaseRoutes.get('/seed', DatabaseSeedController.seed);
+//DatabaseRoutes.get('/clear/users', DatabaseSeedController.clearUsers);
