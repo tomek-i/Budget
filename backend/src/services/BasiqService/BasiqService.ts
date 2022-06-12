@@ -11,7 +11,7 @@ import {
   ListResponse,
   TransactionResponse,
 } from '../../../../common/types/basiq.type';
-//NOTE: for some reason my process.env is not being set here after teh server starts up
+//NOTE: for some reason my process.env is not being set here after the server starts up
 import path from 'path';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: path.resolve(path.join(__dirname, '../../../.env')) });
@@ -22,15 +22,8 @@ const loginpassword = 'whislter';
 
 export enum BasiqScope {
   SERVER_ACCESS = 'SERVER_ACCESS',
-  CLIENT_SCOPE = 'CLIENT_SCOPE',
+  CLIENT_SCOPE = 'CLIENT_ACCESS',
 }
-
-//routes we have
-/*
-
-create user :           POST /basiq/user    DATA" {email,mobile}
-get conset :            GET  /basiq/consent
-*/
 
 export class Basiq {
   apiUrl = 'https://au-api.basiq.io';
@@ -55,6 +48,7 @@ export class Basiq {
       scope,
       userId,
     });
+    console.log(data);
     const response = await axios.post(`${this.apiUrl}/token`, data, {
       headers: {
         Authorization: `Basic ${process.env.BASIQ_KEY}`,
@@ -66,10 +60,9 @@ export class Basiq {
   }
 
   /**
-   *
    * @returns a token with SERVER_ACCESS
    */
-  private async generateServerToken() {
+  async generateServerToken() {
     const data = await this.generateToken(BasiqScope.SERVER_ACCESS);
     const { access_token, token_type, expires_in } = data;
     this.access_token = access_token;
@@ -84,11 +77,13 @@ export class Basiq {
    * @returns
    */
   async getConsentUrl(userId: string) {
+    console.log('get client scope');
     let { access_token } = await this.generateToken(
       BasiqScope.CLIENT_SCOPE,
       userId,
     );
-    return `https://consent.basiq.io/home?userId=${userId}&token=${access_token}`;
+    console.log('return URL');
+    return `https://consent.basiq.io/home?userId="${userId}"&token=${access_token}`;
   }
 
   /**
@@ -114,6 +109,11 @@ export class Basiq {
     return response.data;
   }
 
+  /**
+   *
+   * @param jobId
+   * @returns
+   */
   async getJob(jobId: string) {
     this.ValidateToken();
 
@@ -131,6 +131,7 @@ export class Basiq {
     const result = await axios(config);
     return result.data;
   }
+
   /**
    * get transactions under the account of the user
    * @param userId
@@ -161,6 +162,7 @@ export class Basiq {
     const result = await axios(config);
     return result.data;
   }
+
   /**
    * Gets all available accounts for the user
    * @param userId
@@ -183,6 +185,7 @@ export class Basiq {
     const result = await axios(config);
     return result.data;
   }
+
   /**
    * Get the specified account information from the user
    * @param userId the user id
@@ -207,6 +210,7 @@ export class Basiq {
     const result = await axios(config);
     return result.data;
   }
+
   /**
    * Creates a user on BASIQ
    * @param data
@@ -241,6 +245,7 @@ export class Basiq {
       throw Error(error.message);
     }
   }
+
   /**
    * Ensures that access token is available
    */
