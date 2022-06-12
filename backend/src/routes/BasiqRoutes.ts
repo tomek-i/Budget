@@ -23,12 +23,6 @@ BasiqRoutes.post('/token', async (req: Request, res: Response) => {
   res.status(200).json({ data });
 });
 
-BasiqRoutes.post('/user', async (req: Request, res: Response) => {
-  //TODO: sanitize
-  const data = await basiq.createUser(req.body);
-  res.status(201).json(data);
-});
-
 BasiqRoutes.post('/consent', async (req: Request, res: Response) => {
   const consent = await basiq.getConsentUrl(req.body.userId);
   res.status(200).json({ url: consent });
@@ -38,6 +32,22 @@ BasiqRoutes.get('/job/:jobId', async (req: Request, res: Response) => {
   const jobInfo = await basiq.getJob(req.params.jobId);
   res.status(200).json({ data: jobInfo });
 });
+
+BasiqRoutes.get('/user/:userId', async (req: Request, res: Response) => {
+  const user = await basiq.getUser(req.params.userId);
+  res.status(200).json({ data: user });
+});
+
+BasiqRoutes.post('/user', async (req: Request, res: Response) => {
+  //TODO: sanitize
+  const data = await basiq.createUser(req.body);
+  res.status(201).json(data);
+});
+BasiqRoutes.get('/user/:userId/jobs/', async (req: Request, res: Response) => {
+  const jobInfo = await basiq.getJobs(req.params.userId);
+  res.status(200).json({ data: jobInfo });
+});
+
 BasiqRoutes.get(
   '/transactions/:userId',
   async (req: Request, res: Response) => {

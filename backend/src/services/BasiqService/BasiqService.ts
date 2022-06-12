@@ -48,7 +48,7 @@ export class Basiq {
       scope,
       userId,
     });
-    console.log(data);
+
     const response = await axios.post(`${this.apiUrl}/token`, data, {
       headers: {
         Authorization: `Basic ${process.env.BASIQ_KEY}`,
@@ -86,6 +86,14 @@ export class Basiq {
     return `https://consent.basiq.io/home?userId="${userId}"&token=${access_token}`;
   }
 
+  private executeRequest = async (config: AxiosRequestConfig<any>) => {
+    try {
+      const response = await axios(config);
+      return response.data;
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
   /**
    * Create a BANK connection
    * @param data
@@ -128,8 +136,80 @@ export class Basiq {
       },
     };
 
-    const result = await axios(config);
-    return result.data;
+    try {
+      const result = await axios(config);
+      return result.data;
+    } catch (error: any) {
+      console.error(error.message);
+      return null;
+    }
+  }
+  async getJobs(userId: string) {
+    this.ValidateToken();
+
+    if (!userId) throw new Error('Invalid user id.');
+
+    let config: AxiosRequestConfig<any> = {
+      method: 'GET',
+      url: `${this.apiUrl}/users/${userId}/jobs`,
+      headers: {
+        Authorization: `Bearer ${this.access_token}`,
+        Accept: 'application/json',
+      },
+    };
+
+    try {
+      const result = await axios(config);
+      return result.data;
+    } catch (error: any) {
+      console.error(error.message);
+      return null;
+    }
+  }
+
+  async deleteUser(userId: string) {
+    this.ValidateToken();
+
+    if (!userId) throw new Error('Invalid user id.');
+
+    let config: AxiosRequestConfig<any> = {
+      method: 'DELETE',
+      url: `${this.apiUrl}/users/${userId}`,
+      headers: {
+        Authorization: `Bearer ${this.access_token}`,
+        Accept: 'application/json',
+      },
+    };
+
+    try {
+      const result = await axios(config);
+      return result.data;
+    } catch (error: any) {
+      console.error(error.message);
+      return null;
+    }
+  }
+  async getUser(userId: string) {
+    this.ValidateToken();
+
+    if (!userId) throw new Error('Invalid user id.');
+
+    let config: AxiosRequestConfig<any> = {
+      method: 'GET',
+      url: `${this.apiUrl}/users/${userId}`,
+      headers: {
+        Authorization: `Bearer ${this.access_token}`,
+        Accept: 'application/json',
+      },
+    };
+
+    try {
+      const result = await axios(config);
+      return result.data;
+    } catch (error: any) {
+      console.error(error.message);
+      return null;
+    }
   }
 
   /**

@@ -7,6 +7,8 @@ describe('Basiq tests', () => {
   const basiqService = new Basiq();
 
   const request = supertest(server);
+  const EXISTING_BASIQ_USER_WITH_CONSENT =
+    '8ee3d430-807c-4fe7-9117-5bed2bac8cb0';
 
   // beforeAll(() => {
   //   return initializeCityDatabase();
