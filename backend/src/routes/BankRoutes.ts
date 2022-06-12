@@ -11,6 +11,7 @@ BankRoutes.get('/:userId/accounts', async (req: Request, res: Response) => {
     let response = await controller.getAccounts(req.params.userId);
     res.json(response);
   } catch (error: any) {
+    //TODO: sanitize
     res.status(500).send(error.message);
   }
 });
