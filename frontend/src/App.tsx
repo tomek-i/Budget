@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
-import { HomePage } from './components/pages/home/home';
+import { HomePage } from './components/pages/Home/home';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import { SignupPage } from './components/pages/authentication/SignupPage';
-import { LoginPage } from './components/pages/authentication/LoginPage';
+import { SignupPage } from './components/pages/Authentication/SignupPage';
+import { LoginPage } from './components/pages/Authentication/LoginPage';
 import ProtectedRoute from './components/atoms/protectedRoute';
 import './css/style.scss';
 import { TransactionPage } from './components/pages/TransactionPage';
