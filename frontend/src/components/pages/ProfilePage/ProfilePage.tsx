@@ -175,7 +175,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
 
             if (!user.basiqId) {
               let sign = await signup({ email, mobile });
-              console.log({ signup: sign });
+              //TODO: show toast
             }
           }
         }}

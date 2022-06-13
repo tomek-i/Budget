@@ -61,6 +61,7 @@ const login = async (data: LoginUserData) => {
 
   if (!identity) throw new Error('You need to provide a username or email.');
   if (!password) throw new Error('You need to provide a password.');
+
   const userService = new UserService(AppDataSource.getRepository(User));
   const user = await userService.getByEmail(identity);
 

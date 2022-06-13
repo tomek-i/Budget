@@ -24,7 +24,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({}) => {
     return (
       <div>
         <h1>Error</h1>
-        <p>{error}</p>
+        <p>{JSON.stringify(error)}</p>
       </div>
     );
   }

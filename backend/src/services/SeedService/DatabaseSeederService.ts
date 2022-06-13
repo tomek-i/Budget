@@ -2,34 +2,44 @@ import path from 'path';
 import { Category } from '../../entity/Category';
 import { User } from '../../entity/User';
 import { readFile } from 'fs/promises';
-import { UserService } from '../UserService/UserService';
+import { UserService } from '../UserService';
+import { AppDataSource } from '../DatabaseService';
+import { CategoryService } from '../CategoryService';
 
-const SEED_FOLDER = '..\\..\\tools\\seed';
+const SEED_FOLDER = '..\\..\\..\\tools\\seed';
+
+const userService = new UserService(AppDataSource.getRepository(User));
+const categoryService = new CategoryService(
+  AppDataSource.getRepository(Category),
+);
 
 const clearUsers = async () => {
-  // const users = await DatabaseService().getAll<User>(User);
-  // if (users.length > 0) {
-  //   const ids = users.map((x) => x.id);
-  //   return DatabaseService().deleteAll(User, ids);
-  // }
+  const users = await userService.getAll();
+  if (users.length > 0) {
+    const ids = users.map((x) => x.id);
+    return userService.deleteAll(ids);
+  }
 };
 
 const clearCategories = async () => {
-  // const categories = await DatabaseService().getAll<Category>(Category);
-  // if (categories.length > 0) {
-  //   const ids = categories.map((x) => x.id);
-  //   return DatabaseService().deleteAll(Category, ids);
-  // }
+  const categories = await categoryService.getAll();
+  if (categories.length > 0) {
+    const ids = categories.map((x) => x.id);
+    return categoryService.deleteAll(ids);
+  }
 };
 
+/**
+ * Will delete all entity tables before re-seeding them.
+ */
 const seed = async () => {
   await Promise.all([clearUsers(), clearCategories()]);
 
   const seedUsers = getPromise(async () => {
-    // const data = await parseSeedJsonFile(User);
-    // UserService(DatabaseService()).createMany(data);
-    // //await DatabaseService.save(data);
-    // return `Saved ${data.length} users to the database`;
+    const data = await parseSeedJsonFile(User);
+    const createManyUserLg = await userService.createMany(data);
+    console.log({ createManyUserLg });
+    return `Saved ${data.length} users to the database`;
   });
 
   const seedCategories = getPromise(async () => {
@@ -44,10 +54,38 @@ const seed = async () => {
       }
     }
 
-    //await DatabaseService().save(data);
+    const createManyCategoryLg = await categoryService.createMany(data);
+    console.log({ createManyCategoryLg });
     return `Saved ${data.length} categories to the database`;
   });
   await Promise.all([seedUsers, seedCategories]);
+};
+
+const seedUsers = async () => {
+  return getPromise(async () => {
+    const data = await parseSeedJsonFile(User);
+    await userService.createMany(data);
+    return `Saved ${data.length} users to the database`;
+  });
+};
+
+const seedCategories = async () => {
+  return getPromise(async () => {
+    let data = await parseSeedJsonFile(Category);
+    for (const category of data) {
+      if (category.icon) {
+        let iconPath = path.join(__dirname, SEED_FOLDER, category.icon);
+        try {
+          let base64 = await readFile(iconPath, 'base64');
+          category.icon = `data:image/svg+xml;${base64}`;
+        } catch (error) {}
+      }
+    }
+
+    const createManyCategoryLg = await categoryService.createMany(data);
+    console.log({ createManyCategoryLg });
+    return `Saved ${data.length} categories to the database`;
+  });
 };
 
 /**
@@ -81,13 +119,15 @@ const parseSeedJsonFile = async <T extends unknown>(type: { new (): T }) => {
     ),
   );
   return objs.map((data: any) => {
-    const obj = new type();
+    const obj: any = new type();
     Object.assign(obj, data);
     return obj;
   }) as T[];
 };
 export const DatabaseSeedService = {
   seed,
+  seedUsers,
+  seedCategories,
   clearUsers,
   clearCategories,
 };

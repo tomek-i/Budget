@@ -13,9 +13,13 @@ export class Service<T extends ObjectLiteral> {
     return this.repository.find();
   }
   get(id: string) {}
+
   create(entity: T) {
     if (!entity) throw Error('Invalid entity');
     return this.repository.save(entity);
+  }
+  createMany(entities: T[]) {
+    return this.repository.save(entities);
   }
 
   update(entity: T) {
@@ -26,5 +30,8 @@ export class Service<T extends ObjectLiteral> {
   delete(entity: T) {
     if (!(entity && entity.id)) throw Error('Invalid Entity');
     return this.repository.delete(entity.id);
+  }
+  deleteAll(ids: string[]) {
+    return this.repository.delete(ids);
   }
 }

@@ -36,10 +36,14 @@ export class User implements UserType {
   @Column({ unique: true })
   email!: string;
 
-  @Column({ select: false })
+  //TODO: select false should be OK however with type ORM you need to specidy manually the columns then you want to return if you DO need the password column
+  @Column(/*{ select: false }*/)
   password!: string;
 
-  @Column({ select: false })
+  //TODO: select false should be OK however with type ORM you need to specidy manually the columns then you want to return if you DO need the password column
+  @Column({
+    /*select: false*/
+  })
   salt?: string;
 
   @Column({ unique: true, nullable: true })
@@ -69,7 +73,7 @@ export class User implements UserType {
     ) {
       try {
         // Creating a unique salt for a particular user
-        this.salt = crypto.randomBytes(16).toString('hex');
+        if (!this.salt) this.salt = crypto.randomBytes(16).toString('hex');
 
         // Hash the salt and password with 1000 iterations, 64 length and sha512 digest
         const hash = crypto
@@ -82,10 +86,10 @@ export class User implements UserType {
     }
   }
 
-  async checkPassword(password: string) {
+  async checkPassword(passwordToCheck: string) {
     // Hash the salt and password with 1000 iterations, 64 length and sha512 digest
     const hash = crypto
-      .pbkdf2Sync(password, this.salt ?? '', 1000, 64, 'sha512')
+      .pbkdf2Sync(passwordToCheck, this.salt ?? '', 1000, 64, 'sha512')
       .toString('hex');
 
     return hash === this.password;
