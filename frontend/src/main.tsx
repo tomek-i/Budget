@@ -5,11 +5,14 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 
 import './css/style.scss';
+import { ToastProvider } from './providers/Toast.provider';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ToastProvider>
+        <App />
+      </ToastProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),

@@ -7,6 +7,7 @@ import {
 import { useUpdateUserMutation } from '../../../app/features/api/userApi';
 import { useAppSelector } from '../../../app/hooks';
 import '../../../css/style.scss';
+import { useToast } from '../../../hooks/useToast';
 
 export type ProfilePageProps = {};
 
@@ -53,6 +54,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState(user.email ?? '');
   const [mobile, setMobile] = useState(user.mobile ?? '');
+
+  const toast = useToast();
 
   useEffect(() => {
     if (user) {
@@ -165,19 +168,22 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
         disabled={!!user.basiqId}
         className="md:w-32 bg-blue-600 dark:bg-gray-100 text-white dark:text-gray-800 font-bold py-3 px-6 rounded-lg mt-4 hover:bg-blue-500 dark:hover:bg-gray-200 transition ease-in-out duration-300"
         onClick={async () => {
+          toast.open('CLICKED');
           //step 1: register to banq
           //step 2: authenticate with bank
           //step 3: ???
-          if (email || mobile) {
-            //TODO: this is the bank/basiq login, this should always be loggedin?!
 
-            //TODO: because basiq does not check if a user has been already created, if user.basiqId is set, then we should call an update
+          // if (email || mobile) {
+          //   //TODO: this is the bank/basiq login, this should always be loggedin?!
 
-            if (!user.basiqId) {
-              let sign = await signup({ email, mobile });
-              //TODO: show toast
-            }
-          }
+          //   //TODO: because basiq does not check if a user has been already created, if user.basiqId is set, then we should call an update
+
+          //   if (!user.basiqId) {
+          //     let sign = await signup({ email, mobile });
+          //     toast.open(JSON.stringify(sign));
+          //     //TODO: show toast
+          //   }
+          // }
         }}
       >
         SIGNUP BASIQ
